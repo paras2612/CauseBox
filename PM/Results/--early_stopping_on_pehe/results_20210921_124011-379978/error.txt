@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "main.py", line 110, in main
+    app.run()
+  File "D:\PycharmProjects\pythonProject\PM\evaluate.py", line 131, in run
+    return self.run_single()
+  File "D:\PycharmProjects\pythonProject\PM\evaluate.py", line 157, in run_single
+    model = self.train_model(train_generator,
+  File "D:\PycharmProjects\pythonProject\PM\main.py", line 264, in train_model
+    model.fit_generator(train_generator=train_generator,
+  File "D:\PycharmProjects\pythonProject\PM\psm_pbm.py", line 42, in fit_generator
+    train_generator, train_steps = self.get_matched_generator(train_generator, train_steps)
+  File "D:\PycharmProjects\pythonProject\PM\psm_pbm.py", line 70, in get_matched_generator
+    self.batch_augmentation.enhance_batch_with_propensity_matches(self.benchmark,
+  File "D:\PycharmProjects\pythonProject\PM\batch_augmentation.py", line 36, in enhance_batch_with_propensity_matches
+    return self.batch_augmentation.enhance_batch_with_propensity_matches(benchmark, treatment_data,
+  File "D:\PycharmProjects\pythonProject\PM\propensity_batch.py", line 108, in enhance_batch_with_propensity_matches
+    from twins_benchmark import TwinsBenchmark
+ModuleNotFoundError: No module named 'twins_benchmark'

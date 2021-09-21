@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "main.py", line 40, in main
+    cevae_main()
+  File "D:\PycharmProjects\pythonProject\CEVAE\main.py", line 12, in main
+    parser.add_argument('cevae', type=str, default=100,required=False)
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\argparse.py", line 1350, in add_argument
+    kwargs = self._get_positional_kwargs(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\argparse.py", line 1466, in _get_positional_kwargs
+    raise TypeError(msg)
+TypeError: 'required' is an invalid argument for positionals

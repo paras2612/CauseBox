@@ -1,0 +1,20 @@
+Training with hyperparameters: p_pddm=0.32, r_mid_point_mini=0.32
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP1/ihdp_npci_1-100.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP1/ihdp_npci_1-100.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/10...
+0	Obj: 80.136,	F: 3.931,	Cf: 6.022,	PDDM: 1.7e+02,	mid_p: 0.00017,	Val: 3.647,	ValObj: 73.68
+100	Obj: 21.884,	F: 3.483,	Cf: 5.496,	PDDM: 0.63,	mid_p: 1.5,	Val: 3.212,	ValObj: 18.30
+200	Obj: 1.847,	F: 1.524,	Cf: 1.196,	PDDM: 0.24,	mid_p: 0.0091,	Val: 1.560,	ValObj: 1.88
+300	Obj: 1.735,	F: 1.517,	Cf: 1.189,	PDDM: 0.015,	mid_p: 0.0082,	Val: 1.562,	ValObj: 1.91
+400	Obj: 1.720,	F: 1.511,	Cf: 1.187,	PDDM: 0.016,	mid_p: 0.0037,	Val: 1.557,	ValObj: 1.89
+500	Obj: 1.630,	F: 1.438,	Cf: 1.214,	PDDM: 0.25,	mid_p: 0.037,	Val: 1.484,	ValObj: 1.85
+600	Obj: 1.145,	F: 1.157,	Cf: 1.085,	PDDM: 0.0031,	mid_p: 0.1,	Val: 1.224,	ValObj: 1.41
+700	Obj: 0.988,	F: 1.025,	Cf: 1.028,	PDDM: 0.036,	mid_p: 0.037,	Val: 1.164,	ValObj: 1.29
+800	Obj: 1.108,	F: 1.114,	Cf: 1.045,	PDDM: 0.069,	mid_p: 0.0038,	Val: 1.263,	ValObj: 1.43
+900	Obj: 0.938,	F: 0.989,	Cf: 1.012,	PDDM: 0.024,	mid_p: 0.023,	Val: 1.158,	ValObj: 1.27
+1000	Obj: 0.941,	F: 0.967,	Cf: 1.003,	PDDM: 0.093,	mid_p: 0.022,	Val: 1.138,	ValObj: 1.26
+1100	Obj: 0.908,	F: 0.955,	Cf: 0.996,	PDDM: 0.016,	mid_p: 0.023,	Val: 1.123,	ValObj: 1.23
+1200	Obj: 0.962,	F: 0.961,	Cf: 0.988,	PDDM: 0.13,	mid_p: 0.033,	Val: 1.104,	ValObj: 1.23

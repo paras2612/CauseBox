@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "main.py", line 108, in main
+    app = pm.MainApplication(parse_parameters())
+NameError: name 'parse_parameters' is not defined

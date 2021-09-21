@@ -1,0 +1,12 @@
+Training with hyperparameters: alpha=0.0001, lambda=0.0001
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.train.npz/ihdp_npci_1-1000.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.test.npz/ihdp_npci_1-1000.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/1...
+0	Obj: 46.638,	F: 3.813,	Cf: 6.007,	Imb: 0.67,	Val: 3.844,	ValImb: 0.68,	ValObj: 47.39
+100	Obj: 43.042,	F: 3.707,	Cf: 5.889,	Imb: 1.5,	Val: 3.738,	ValImb: 1.5,	ValObj: 43.76
+200	Obj: 29.162,	F: 3.060,	Cf: 5.107,	Imb: 1.5,	Val: 3.091,	ValImb: 1.5,	ValObj: 29.82
+300	Obj: 14.595,	F: 2.183,	Cf: 3.565,	Imb: 1.5,	Val: 2.215,	ValImb: 1.5,	ValObj: 15.20
+400	Obj: 5.866,	F: 1.483,	Cf: 1.969,	Imb: 0.92,	Val: 1.545,	ValImb: 0.99,	ValObj: 6.52

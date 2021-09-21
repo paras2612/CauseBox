@@ -5,6 +5,7 @@ from PyQt5.QtCore import *
 import model
 import args
 from queue import Queue
+from GUI_tab import Tab1, Tab2
 
 command = ""
 
@@ -53,12 +54,24 @@ class MyApp(QMainWindow):
 
         # self.progressBar = QProgressBar()
         # self.progressBar.setAlignment(Qt.AlignVCenter)
+        # buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        # buttonBox.button(QDialogButtonBox.Ok).setText("Submit")
+        # buttonBox.button(QDialogButtonBox.Cancel).setText("Reset")
+        # buttonBox.accepted.connect(self.accept)
+        # buttonBox.rejected.connect(self.reject)
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttonBox.button(QDialogButtonBox.Ok).setText("Submit")
-        buttonBox.button(QDialogButtonBox.Cancel).setText("Reset")
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
+        buttonLayout = QHBoxLayout()
+        self.saveButton = QToolButton()
+        self.saveButton.setText("Save The Result To Database √")
+        self.saveButton.setEnabled(False)
+        self.runButton = QToolButton()
+        self.runButton.setText("Run The Model With Parameter √")
+        self.saveButton.clicked.connect(self.saveLog)
+        self.runButton.clicked.connect(self.runModel)
+        buttonLayout.addWidget(self.runButton)
+        buttonLayout.addWidget(self.saveButton)
+        buttonWidget = QWidget()
+        buttonWidget.setLayout(buttonLayout)
 
         self.detailsButton = QToolButton()
         self.detailsButton.setText("Less...")
@@ -73,15 +86,16 @@ class MyApp(QMainWindow):
         self.createOptionalParamsBox()
         self.createConsoleBox()
         self.createSettingsBox()
+        self.createResultTabs()
 
         self.mainLayout = QGridLayout()
         self.mainLayout.addWidget(self.SettingsBox, 0, 0)
+        self.mainLayout.addWidget(self.ResultTabs, 0, 1, 5, 5)
         self.mainLayout.addWidget(self.RequiredParamasBox, 1, 0)
         self.mainLayout.addWidget(self.detailsButton, 2, 0)
         self.mainLayout.addWidget(self.OptionalParamsBox, 3, 0)
         self.mainLayout.addWidget(self.ConsoleBox, 4, 0)
-        # self.mainLayout.addWidget(self.progressBar, 5, 0)
-        self.mainLayout.addWidget(buttonBox, 5, 0)
+        self.mainLayout.addWidget(buttonWidget, 5, 0)
         self.setLayout(self.mainLayout)
 
         mainWidget = QWidget()
@@ -90,7 +104,7 @@ class MyApp(QMainWindow):
 
         self.setWindowIcon(self.style().standardIcon(getattr(QStyle, 'SP_FileDialogListView')))
         self.setWindowTitle('CIKM Demo Tutorial')
-        self.setGeometry(1000, 1000, 1000, 1000)
+        self.setGeometry(2000, 2000, 2000, 2000)
         self.setCenter()
 
     def createRequiredParamsBox(self):
@@ -205,12 +219,14 @@ class MyApp(QMainWindow):
         elif text == "Jobs":
             self.dataset = "Jobs"
 
-    def accept(self):
+    def runModel(self):
+        self.changeBtnStatus()
         self.createCommand()
-        self.start_thread()
+        # self.start_thread()
 
-    def reject(self):
+    def saveLog(self):
         self.reset()
+        self.changeBtnStatus()
 
     def createCommand(self):
         submitParams = dict()
@@ -250,7 +266,7 @@ class MyApp(QMainWindow):
         lines = self.lines
         for i, line in enumerate(lines):
             line.setText("")
-        # self.textedit.setText("")
+        self.textedit.setText("")
 
     def showDetail(self):
         if self.detailsButton.isChecked():
@@ -263,6 +279,14 @@ class MyApp(QMainWindow):
             self.detailsButton.setText("More...")
             self.OptionalParamsBox.hide()
 
+    def changeBtnStatus(self):
+        if self.runButton.isEnabled():
+            self.runButton.setEnabled(False)
+            self.saveButton.setEnabled(True)
+
+        else:
+            self.runButton.setEnabled(True)
+            self.saveButton.setEnabled(False)
     def file_open(self):
         name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
         file = open(name, 'r')
@@ -304,6 +328,14 @@ class MyApp(QMainWindow):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+    def createResultTabs(self):
+        self.ResultTabs = QTabWidget()
+
+        # self.rankTab = Tab1()
+        # self.expTab = Tab2()
+        #
+        # self.ResultTabs.addTab(self.rankTab, "Comparison")
+        # self.ResultTabs.addTab(self.expTab, "Hyperparameter Sesarch")
 
 if __name__ == '__main__':
     queue = Queue()

@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-# import model
+import model
 import args
 from queue import Queue
 from GUI_tab import Tab1, Tab2
@@ -274,7 +274,7 @@ class MyApp(QMainWindow):
     def runModel(self):
         self.changeBtnStatus()
         self.createCommand()
-        # self.start_thread()
+        self.start_thread()
 
     def saveResult(self):
         self.reset()

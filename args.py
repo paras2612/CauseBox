@@ -43,6 +43,87 @@ class CFRNet:
                 "reweight_sample"]
 
 
+class CEVAE:
+    required = ["Num_data",
+                "Feature_dim",
+                "Latent_dim",
+                "Hidden_dim",
+                "Num_layers",
+                "Epochs",
+                "Batch_size",
+                "Lr",
+                "Lrate_decay",
+                "Weight_decay",
+                "Seed",
+                "Train_path",
+                "Test_path"]
+
+    optional = []
+
+class BART:
+    required = ["Rscript_Path",
+                "Train_data_path",
+                "Test_data_path",
+                "Out_data_path",
+                "Experiments"]
+    optional = []
+
+
+class CausalForests:
+    required = ["Rscript_Path",
+                "Train_data_path",
+                "Test_data_path",
+                "Out_data_path",
+                "Experiments"]
+    optional = []
+
+
+class PerfectMatch:
+    required = ["Seed",
+                "Output_directory",
+                "Load_existing",
+                "N_jobs",
+                "Learning_rate",
+                "L2_weight",
+                "Num_epochs",
+                "Batch_size",
+                "Early_stopping_patience",
+                "Num_units",
+                "Num_layers",
+                "Dropout",
+                "Imbalance_loss_weight",
+                "Fraction_of_data_set",
+                "Validation_set_fraction",
+                "Test_set_fraction",
+                "Num_hyperopt_runs",
+                "Hyperopt_offset",
+                "Tcga_num_features",
+                "Experiment_index",
+                "Num_treatments",
+                "Num_randomised_neighbors",
+                "Strength_of_assignment_bias",
+                "Propensity_batch_probability",
+                "Ganite_weight_alpha",
+                "Ganite_weight_beta",
+                "Benchmark",
+                "Method",
+                "With_rnaseq",
+                "Do_not_use_tarnet",
+                "Do_hyperopt",
+                "Do_evaluate",
+                "Hyperopt_against_eval_set",
+                "Copy_to_local",
+                "Do_hyperopt_on_lsf",
+                "Do_merge_lsf",
+                "With_tensorboard",
+                "With_propensity_dropout",
+                "With_propensity_batch",
+                "Early_stopping_on_pehe",
+                "With_pehe_loss",
+                "Match_on_covariates",
+                "Save_predictions"]
+    optional = []
+
 class DRNet:
     required = ["Loss",
                 "P_alpha",
@@ -138,87 +219,6 @@ class SITE:
                 "Dim_s",
                 "Equal_sample"]
 
-
-class BART:
-    required = ["Rscript_Path",
-                "Train_data_path",
-                "Test_data_path",
-                "Out_data_path",
-                "Experiments"]
-    optional = []
-
-
-class CausalForests:
-    required = ["Rscript_Path",
-                "Train_data_path",
-                "Test_data_path",
-                "Out_data_path",
-                "Experiments"]
-    optional = []
-
-
-class PerfectMatch:
-    required = ["Seed",
-                "Output_directory",
-                "Load_existing",
-                "N_jobs",
-                "Learning_rate",
-                "L2_weight",
-                "Num_epochs",
-                "Batch_size",
-                "Early_stopping_patience",
-                "Num_units",
-                "Num_layers",
-                "Dropout",
-                "Imbalance_loss_weight",
-                "Fraction_of_data_set",
-                "Validation_set_fraction",
-                "Test_set_fraction",
-                "Num_hyperopt_runs",
-                "Hyperopt_offset",
-                "Tcga_num_features",
-                "Experiment_index",
-                "Num_treatments",
-                "Num_randomised_neighbors",
-                "Strength_of_assignment_bias",
-                "Propensity_batch_probability",
-                "Ganite_weight_alpha",
-                "Ganite_weight_beta",
-                "Benchmark",
-                "Method",
-                "With_rnaseq",
-                "Do_not_use_tarnet",
-                "Do_hyperopt",
-                "Do_evaluate",
-                "Hyperopt_against_eval_set",
-                "Copy_to_local",
-                "Do_hyperopt_on_lsf",
-                "Do_merge_lsf",
-                "With_tensorboard",
-                "With_propensity_dropout",
-                "With_propensity_batch",
-                "Early_stopping_on_pehe",
-                "With_pehe_loss",
-                "Match_on_covariates",
-                "Save_predictions"]
-    optional = []
-
-class CEVAE:
-    required = ["Num_data",
-                "Feature_dim",
-                "Latent_dim",
-                "Hidden_dim",
-                "Num_layers",
-                "Epochs",
-                "Batch_size",
-                "Lr",
-                "Lrate_decay",
-                "Weight_decay",
-                "Seed",
-                "Train_path",
-                "Test_path"]
-
-    optional = []
 
 if __name__ == "__main__":
     print(CFRNet().opteional)

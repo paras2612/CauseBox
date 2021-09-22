@@ -2,12 +2,14 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-import model
+# import model
 import args
 from queue import Queue
 from GUI_tab import Tab1, Tab2
-
-command = ""
+import json
+import os
+import datetime
+# import sip
 
 class WriteStream(object):
     def __init__(self, queue):
@@ -16,6 +18,9 @@ class WriteStream(object):
     def write(self, text):
         self.queue.put(text)
 
+    def flush(self):
+        pass
+
 
 class MyReceiver(QObject):
     mysignal = pyqtSignal(str)
@@ -23,18 +28,19 @@ class MyReceiver(QObject):
     def __init__(self, queue, *args, **kwargs):
         QObject.__init__(self, *args, **kwargs)
         self.queue = queue
-
     @pyqtSlot()
     def run(self):
         while True:
             text = self.queue.get()
             self.mysignal.emit(text)
 
+
 class MyApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.args = args.CFRNet()
-        self.dataset = "IHDP"
+        self.dataset = "Jobs"
+        self.modelName = "Counterfactual Regression Network (CFRNet)"
         self.MainWindowGUI()
 
     def MainWindowGUI(self):
@@ -47,20 +53,37 @@ class MyApp(QMainWindow):
         openFile.setShortcut('Ctrl+O')
         openFile.setStatusTip('Open File')
         openFile.triggered.connect(self.file_open)
-
         fileMenu = self.menuBar().addMenu('&File')
         fileMenu.addAction(openFile)
         fileMenu.addAction(exitApp)
 
-        # self.progressBar = QProgressBar()
-        # self.progressBar.setAlignment(Qt.AlignVCenter)
-        # buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        # buttonBox.button(QDialogButtonBox.Ok).setText("Submit")
-        # buttonBox.button(QDialogButtonBox.Cancel).setText("Reset")
-        # buttonBox.accepted.connect(self.accept)
-        # buttonBox.rejected.connect(self.reject)
+        self.SettingsBox = self.createSettingsBox()
+        self.ResultTabs = self.createResultTabs()
+        self.ParamsBox = self.createParamsBox()
+        self.ConsoleBox = self.createConsoleBox()
+        self.ButtonBox = self.createButtonBox()
 
-        buttonLayout = QHBoxLayout()
+        self.mainLayout = QGridLayout()
+        self.mainLayout.addWidget(self.SettingsBox, 0, 0)
+        # self.mainLayout.addWidget(self.ResultTabs, 0, 1, 3, 1)
+        self.mainLayout.addWidget(self.ParamsBox, 1, 0)
+        self.mainLayout.addWidget(self.ConsoleBox, 2, 0)
+        self.mainLayout.addWidget(self.ButtonBox, 3, 0)
+        self.setLayout(self.mainLayout)
+
+        self.mainWidget = QWidget()
+        self.mainWidget.setLayout(self.mainLayout)
+        self.setCentralWidget(self.mainWidget)
+
+        self.setWindowIcon(self.style().standardIcon(getattr(QStyle, 'SP_FileDialogListView')))
+        self.setWindowTitle('CIKM Demo Tutorial')
+        self.setGeometry(2000, 2000, 2000, 2000)
+        self.setCenter()
+
+    def createButtonBox(self):
+        self.ButtonBox = QWidget()
+
+        layout = QHBoxLayout()
         self.saveButton = QToolButton()
         self.saveButton.setText("Save The Result To Database √")
         self.saveButton.setEnabled(False)
@@ -68,10 +91,19 @@ class MyApp(QMainWindow):
         self.runButton.setText("Run The Model With Parameter √")
         self.saveButton.clicked.connect(self.saveLog)
         self.runButton.clicked.connect(self.runModel)
-        buttonLayout.addWidget(self.runButton)
-        buttonLayout.addWidget(self.saveButton)
-        buttonWidget = QWidget()
-        buttonWidget.setLayout(buttonLayout)
+
+        layout.addWidget(self.runButton)
+        layout.addWidget(self.saveButton)
+        self.ButtonBox.setLayout(layout)
+
+    def createParamsBox(self):
+        widget = QWidget(self)
+        layout = QVBoxLayout()
+
+        self.paramLabels = list()
+        self.paramLines = list()
+        self.RequiredParamsBox = self.createRequiredParamsBox()
+        layout.addWidget(self.RequiredParamsBox)
 
         self.detailsButton = QToolButton()
         self.detailsButton.setText("Less...")
@@ -81,57 +113,45 @@ class MyApp(QMainWindow):
         self.detailsButton.setAutoRaise(True)
         self.detailsButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
         self.detailsButton.clicked.connect(self.showDetail)
+        layout.addWidget(self.detailsButton)
 
-        self.createRequiredParamsBox()
-        self.createOptionalParamsBox()
-        self.createConsoleBox()
-        self.createSettingsBox()
-        self.createResultTabs()
+        self.OptionalParamsBox = self.createOptionalParamsBox()
+        layout.addWidget(self.OptionalParamsBox)
 
-        self.mainLayout = QGridLayout()
-        self.mainLayout.addWidget(self.SettingsBox, 0, 0)
-        self.mainLayout.addWidget(self.ResultTabs, 0, 1, 5, 1)
-        self.mainLayout.addWidget(self.RequiredParamasBox, 1, 0)
-        self.mainLayout.addWidget(self.detailsButton, 2, 0)
-        self.mainLayout.addWidget(self.OptionalParamsBox, 3, 0)
-        self.mainLayout.addWidget(self.ConsoleBox, 4, 0)
-        self.mainLayout.addWidget(buttonWidget, 5, 0)
-        self.setLayout(self.mainLayout)
+        resetParamsBtn = QPushButton("Reset Params")
+        resetParamsBtn.clicked.connect(self.resetParams)
+        layout.addWidget(resetParamsBtn)
 
-        mainWidget = QWidget()
-        mainWidget.setLayout(self.mainLayout)
-        self.setCentralWidget(mainWidget)
+        widget.setLayout(layout)
 
-        self.setWindowIcon(self.style().standardIcon(getattr(QStyle, 'SP_FileDialogListView')))
-        self.setWindowTitle('CIKM Demo Tutorial')
-        self.setGeometry(2000, 2000, 2000, 2000)
-        self.setCenter()
+        return widget
 
     def createRequiredParamsBox(self):
-        self.RequiredParamasBox = QGroupBox("Required Parameters")
+        widget = QGroupBox("• Required Parameters: ")
         layout = QGridLayout()
-
-        self.labels = list()
-        self.lines = list()
         i = j = 0
+        # pairL= QFormLayout()
+
         for key in self.args.required:
             j += 2
             label = QLabel(key)
             line = QLineEdit()
+            # pairL.addRow(label, line)
             layout.addWidget(label, i, j)
             layout.addWidget(line, i, j + 1)
-            self.labels.append(label)
-            self.lines.append(line)
+            self.paramLabels.append(label)
+            self.paramLines.append(line)
 
             # Move to next column if the rows are more than 4 lines
             if j > 6:
                 i += 1
                 j = 0
 
-        self.RequiredParamasBox.setLayout(layout)
+        widget.setLayout(layout)
+        return widget
 
     def createOptionalParamsBox(self):
-        self.OptionalParamsBox = QGroupBox("Optional Parameters")
+        widget = QGroupBox("► Optional Parameters")
         layout = QGridLayout()
 
         i = j = 0
@@ -141,30 +161,32 @@ class MyApp(QMainWindow):
             line = QLineEdit()
             layout.addWidget(label, i, j)
             layout.addWidget(line, i, j + 1)
-            self.labels.append(label)
-            self.lines.append(line)
+            self.paramLabels.append(label)
+            self.paramLines.append(line)
 
             # Move to next column if the rows are more than 4 lines
             if j > 6:
                 i += 1
                 j = 0
 
-        self.OptionalParamsBox.setLayout(layout)
+        widget.setLayout(layout)
+        return widget
 
     def createConsoleBox(self):
-        self.ConsoleBox = QGroupBox("Console")
+        widget = QGroupBox("Console")
         self.textedit = QTextEdit()
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.textedit)
+        self.ConsoleLayout = QVBoxLayout()
+        self.ConsoleLayout.addWidget(self.textedit)
 
         clearConsoleBtn = QPushButton("Clear Console")
         clearConsoleBtn.clicked.connect(self.clearConsole)
-        layout.addWidget(clearConsoleBtn)
-        self.ConsoleBox.setLayout(layout)
+        self.ConsoleLayout.addWidget(clearConsoleBtn)
+        widget.setLayout(self.ConsoleLayout)
+        return widget
 
     def createSettingsBox(self):
-        self.SettingsBox = QGroupBox("Settings")
+        widget = QGroupBox("Settings")
 
         modelComboBox = QComboBox()
         modelComboBox.addItem("Counterfactual Regression Network (CRFNet)")
@@ -181,68 +203,73 @@ class MyApp(QMainWindow):
         dataComboBox.addItem("IHDP")
         dataComboBox.activated[str].connect(self.dataChoice)
 
-        layout = QVBoxLayout()
-        layout.addWidget(modelComboBox)
-        layout.addWidget(dataComboBox)
+        self.SettingLayout = QVBoxLayout()
+        self.SettingLayout.addWidget(modelComboBox)
+        self.SettingLayout.addWidget(dataComboBox)
 
-        self.SettingsBox.setLayout(layout)
+        widget.setLayout(self.SettingLayout)
+        return widget
 
-    def createParamsBox(self):
-        self.ParamsBox = QWidget(self)
-
-        layout = QVBoxLayout()
-
-        self.createRequiredParamsBox()
-        layout.addWidget(self.RequiredParamasBox)
-
-        self.detailsButton = QToolButton()
-        self.detailsButton.setText("Less...")
-        self.detailsButton.setCheckable(True)
-        self.detailsButton.setChecked(True)
-        self.detailsButton.setArrowType(Qt.UpArrow)
-        self.detailsButton.setAutoRaise(True)
-        self.detailsButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        self.detailsButton.clicked.connect(self.showDetail)
-        layout.addWidget(self.detailsButton)
-
-        self.createOptionalParamsBox()
-        layout.addWidget(self.OptionalParamsBox)
-
-        resetParamsBtn = QPushButton("Reset Params")
-        resetParamsBtn.clicked.connect(self.resetParams)
-        layout.addWidget(resetParamsBtn)
-
-        self.ParamsBox.setLayout(layout)
     def modelChoice(self, text):
-        self.mainLayout.removeWidget(self.ParamsBox)
-        if text == "Counterfactual Regression Network (CRFNet)":
+        self.modelName = text
+        if self.modelName == "Counterfactual Regression Network (CRFNet)":
             self.args = args.CFRNet()
-        elif text == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
+        elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
             self.args = args.CEVAE()
-        elif text == "Bayesian Additive Regression Trees (BART)":
+        elif self.modelName == "Bayesian Additive Regression Trees (BART)":
             self.args = args.BART()
-        elif text == "Causal Forests":
+        elif self.modelName == "Causal Forests":
             self.args = args.CausalForests()
-        elif text == "Perfect Match":
+        elif self.modelName == "Perfect Match":
             self.args = args.PerfectMatch()
-        elif text == "Learning Disentangled Representations for counterfactual regression (DRNet)":
+        elif self.modelName == "Learning Disentangled Representations for counterfactual regression (DRNet)":
             self.args = args.DRNet()
-        elif text == "Local similarity preserved individual treatment effect (SITE)":
+        elif self.modelName == "Local similarity preserved individual treatment effect (SITE)":
             self.args = args.SITE()
         else:
             print("Combobox Error occured")
 
-        self.modelName = text
-        self.createParamsBox()
-        self.mainLayout.addWidget(self.ParamsBox, 1, 0)
+        self.updateWidget()
+
+    def updateWidget(self):
+        # self.updateSettingsWidget()
+        self.updateParamsWidget()
+        # self.updateConsoleWidget()
+
+    def updateSettingsWidget(self):
+        if hasattr(self, 'SettingsBox'):
+            self.mainLayout.removeWidget(self.SettingsBox)
+            self.SettingsBox = self.createSettingsBox()
+            self.mainLayout.addWidget(self.SettingsBox,0,0)
+            self.mainLayout.update()
+
+    def updateParamsWidget(self):
+        if hasattr(self, 'ParamsBox'):
+            self.mainLayout.removeWidget(self.ParamsBox)
+            # sip.delete(self.ParamsBox)
+            # self.ParamsBox = None
+            self.ParamsBox = self.createParamsBox()
+
+            self.mainLayout.addWidget(self.ParamsBox, 1, 0)
+            self.mainWidget.setLayout(self.mainLayout)
+            self.mainLayout.update()
+
+    def updateConsoleWidget(self):
+        if hasattr(self, 'ConsoleBox'):
+            self.mainLayout.removeWidget(self.ConsoleBox)
+            self.ConsoleBox = self.createConsoleBox()
+            self.mainLayout.addWidget(self.ConsoleBox, 2, 0)
+            self.mainLayout.update()
 
     def dataChoice(self, text):
         self.dataset = text
 
     def resetParams(self):
-        lines = self.lines
-        for i, line in enumerate(lines):
+        for line in self.paramLines:
             line.setText("")
+
+    def clearConsole(self):
+        self.textedit.setText("")
     def runModel(self):
         self.changeBtnStatus()
         self.createCommand()
@@ -252,26 +279,48 @@ class MyApp(QMainWindow):
         self.reset()
         self.changeBtnStatus()
 
+    def updateStatus(self):
+        self.changeBtnStatus()
+        outdir = self.newParamDict["outdir"]
+        timestamp =datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+
+        filename = "result_" + timestamp + ".json"
+        filepath = os.getcwd() + "\\PlotData\\" + filename
+        result = dict()
+        result["evaluation"] = self.extractEvaluation()
+        result["params"] = self.newParamDict
+        with open(filepath, "w") as file:
+            json.dump(result, file, indent=3)
+    def extractEvaluation(self):
+        for line in self.textedit.toPlainText().split("\n"):
+            if "Policy Risk" in line or "ATT" in line:
+                evaluation = line
+        PolicyRisk = evaluation.split("ATT")[0].split()[3]
+        ATT = evaluation.split("ATT")[1].split()[1]
+
+        result = dict()
+        result["PolicyRisk"] = float(PolicyRisk)
+        result["ATT"] = float(ATT)
+        return result
+
     def createCommand(self):
         submitParams = dict()
-        for label, line in zip(self.labels, self.lines):
-            key = label.text()
+        for label, line in zip(self.paramLabels, self.paramLines):
+            key = label.text().lower()
             val = line.text()
             submitParams[key] = val
-        global command
-        command = "python main.py "
+        self.command = "python main.py "
         options = list()
         for key, val in submitParams.items():
-            #skip the parameter if the value  is empty
+            # skip the parameter if the value  is empty
             if val.strip() == "":
                 continue
+            key = key.lower()
             option = "--{key} {val}".format(key=key, val=val)
             options.append(option)
 
-        command = command + " ".join(options)
-        print("*" * 10, "Testing Command Line", "*" * 10)
-        print(command)
-        print("*" * 40)
+        self.command = self.command + " ".join(options) + " --dataset %s" % (self.dataset)
+        self.experiments = submitParams["experiments"]
 
     @pyqtSlot(str)
     def append_text(self, text):
@@ -281,19 +330,20 @@ class MyApp(QMainWindow):
     @pyqtSlot()
     def start_thread(self):
         self.thread = QThread()
-        self.backendApp = model.backendApp(command)
+        self.backendApp = model.backendApp(self.command, self.dataset, self.modelName, self.experiments)
         self.backendApp.moveToThread(self.thread)
+        self.thread.setTerminationEnabled(True)
         self.thread.started.connect(self.backendApp.run)
         self.thread.start()
 
-    def reset(self):
-        lines = self.lines
-        for i, line in enumerate(lines):
-            line.setText("")
-        self.clearConsole()
+    def changeBtnStatus(self):
+        if self.runButton.isEnabled():
+            self.runButton.setEnabled(False)
+            self.saveButton.setEnabled(True)
 
-    def clearConsole(self):
-        self.textedit.setText("")
+        else:
+            self.runButton.setEnabled(True)
+            self.saveButton.setEnabled(False)
 
     def showDetail(self):
         if self.detailsButton.isChecked():
@@ -306,37 +356,62 @@ class MyApp(QMainWindow):
             self.detailsButton.setText("More...")
             self.OptionalParamsBox.hide()
 
-    def changeBtnStatus(self):
-        if self.runButton.isEnabled():
-            self.runButton.setEnabled(False)
-            self.saveButton.setEnabled(True)
-
-        else:
-            self.runButton.setEnabled(True)
-            self.saveButton.setEnabled(False)
     def file_open(self):
         name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
+        if name == "":
+            return 0
         file = open(name, 'r')
-        with file:
-            text = file.read()
-            text = text.replace("\r\n", "\n")
-            text = text.strip()
-        self.file_validation(text)
+        try:
+            with file:
+                text = file.read()
+                text = text.replace("\r\n", "\n")
+                text = text.strip()
+            self.file_validation(text)
+
+        except:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Please check if you selected has the correct format")
+            msg.setWindowTitle("Error")
+            msg.exec_()
 
     def file_validation(self, text):
-        loadedParams = dict()
-        delimParams = [option.split(" ") for option in text.split("\n")]
-        for key, val in delimParams:
-            loadedParams[key] = val
-        if list(loadedParams.keys()) == self.args.required:
-            for label, line in zip(self.labels, self.lines):
-                key = label.text()
-                val = loadedParams[key]
-                line.setText(val)
+        self.newParamDict = self.delimitParamsDict(text)
+        newParamSet = set([param.lower() for param in self.newParamDict.keys()])
+        requiredParamSet = set([param.lower() for param in self.args.required])
+        optionalParamSet = set([param.lower() for param in self.args.optional])
+        unionParamSet = set.union(requiredParamSet, optionalParamSet)
+
+        if newParamSet.issubset(unionParamSet):
+            if not requiredParamSet.issubset(newParamSet):
+                msg = QMessageBox(self)
+                msg.setIcon(QMessageBox.Warning)
+                msg.setText("Warning")
+                msg.setInformativeText('This file has some missing required parameters')
+                msg.setWindowTitle("Warning")
+                msg.exec_()
+            for label, line in zip(self.paramLabels, self.paramLines):
+                key = label.text().lower()
+                if key in self.newParamDict.keys():
+                    val = self.newParamDict[key]
+                    line.setText(val)
 
         else:
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText('This file cannot be loaded because it has undefined parameters')
+            msg.setWindowTitle("Error")
+            msg.exec_()
+
+    def delimitParamsDict(self, text):
+        result = dict()
+        delimParamsList = [option.split() for option in text.split("\n")]
+        for key, val in delimParamsList:
+            key = key.lower()
+            result[key] = val
+        return result
 
     def close_application(self):
         choice = QMessageBox.question(self, 'Message',
@@ -349,21 +424,22 @@ class MyApp(QMainWindow):
         else:
             pass
 
+
+    def createResultTabs(self):
+        widget = QTabWidget()
+
+        self.rankTab = Tab1()
+        # self.expTab = Tab2()
+
+        widget.addTab(self.rankTab, "Comparison")
+        # widget.addTab(self.expTab, "Hyperparameter Sesarch")
+        return widget
+
     def setCenter(self):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
-    def createResultTabs(self):
-        self.ResultTabs = QTabWidget()
-
-        self.rankTab = Tab1()
-        # self.expTab = Tab2()
-
-        self.ResultTabs.addTab(self.rankTab, "Comparison")
-        # self.ResultTabs.addTab(self.expTab, "Hyperparameter Sesarch")
-
 if __name__ == '__main__':
     queue = Queue()
     sys.stdout = WriteStream(queue)

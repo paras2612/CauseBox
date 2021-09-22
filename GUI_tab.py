@@ -62,7 +62,7 @@ class Tab1(QTabBar):
         ax1 = self.figure.add_subplot(121)
         x1 = table1.keys()
         y1 = [float(value) for value in table1.values()]
-        ax1.bar(x1, y1, color='rgbc')
+        ax1.bar(x1, y1, color=["red", "green", "blue", "black"])
         ax1.set_title("IHDP Dataset")
         ax1.set_ylabel('PEHE')
         ax1.set_xlabel('Model')
@@ -71,7 +71,7 @@ class Tab1(QTabBar):
         ax2 = self.figure.add_subplot(122)
         x2 = table2.keys()
         y2 = [float(value) for value in table2.values()]
-        ax2.bar(x2, y2, color='rgbc')
+        ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
         ax2.set_title("Jobs Dataset")
         ax2.set_ylabel('Policy Risk')
         ax2.set_xlabel('Model')

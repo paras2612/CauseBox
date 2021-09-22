@@ -65,7 +65,7 @@ class MyApp(QMainWindow):
 
         self.mainLayout = QGridLayout()
         self.mainLayout.addWidget(self.SettingsBox, 0, 0)
-        # self.mainLayout.addWidget(self.ResultTabs, 0, 1, 3, 1)
+        self.mainLayout.addWidget(self.ResultTabs, 0, 1, 3, 1)
         self.mainLayout.addWidget(self.ParamsBox, 1, 0)
         self.mainLayout.addWidget(self.ConsoleBox, 2, 0)
         self.mainLayout.addWidget(self.ButtonBox, 3, 0)
@@ -81,20 +81,20 @@ class MyApp(QMainWindow):
         self.setCenter()
 
     def createButtonBox(self):
-        self.ButtonBox = QWidget()
-
+        widget= QWidget()
         layout = QHBoxLayout()
         self.saveButton = QToolButton()
         self.saveButton.setText("Save The Result To Database √")
         self.saveButton.setEnabled(False)
         self.runButton = QToolButton()
         self.runButton.setText("Run The Model With Parameter √")
-        self.saveButton.clicked.connect(self.saveLog)
+        self.saveButton.clicked.connect(self.saveResult)
         self.runButton.clicked.connect(self.runModel)
 
         layout.addWidget(self.runButton)
         layout.addWidget(self.saveButton)
-        self.ButtonBox.setLayout(layout)
+        widget.setLayout(layout)
+        return widget
 
     def createParamsBox(self):
         widget = QWidget(self)
@@ -270,12 +270,13 @@ class MyApp(QMainWindow):
 
     def clearConsole(self):
         self.textedit.setText("")
+
     def runModel(self):
         self.changeBtnStatus()
         self.createCommand()
         # self.start_thread()
 
-    def saveLog(self):
+    def saveResult(self):
         self.reset()
         self.changeBtnStatus()
 
@@ -321,7 +322,7 @@ class MyApp(QMainWindow):
 
         self.command = self.command + " ".join(options) + " --dataset %s" % (self.dataset)
         self.experiments = submitParams["experiments"]
-
+        print(self.command)
     @pyqtSlot(str)
     def append_text(self, text):
         self.textedit.moveCursor(QTextCursor.End)

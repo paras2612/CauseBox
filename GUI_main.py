@@ -90,7 +90,7 @@ class MyApp(QMainWindow):
 
         self.mainLayout = QGridLayout()
         self.mainLayout.addWidget(self.SettingsBox, 0, 0)
-        self.mainLayout.addWidget(self.ResultTabs, 0, 1, 5, 5)
+        self.mainLayout.addWidget(self.ResultTabs, 0, 1, 5, 1)
         self.mainLayout.addWidget(self.RequiredParamasBox, 1, 0)
         self.mainLayout.addWidget(self.detailsButton, 2, 0)
         self.mainLayout.addWidget(self.OptionalParamsBox, 3, 0)
@@ -115,7 +115,7 @@ class MyApp(QMainWindow):
         self.lines = list()
         i = j = 0
         for key in self.args.required:
-            i += 1
+            j += 2
             label = QLabel(key)
             line = QLineEdit()
             layout.addWidget(label, i, j)
@@ -123,10 +123,10 @@ class MyApp(QMainWindow):
             self.labels.append(label)
             self.lines.append(line)
 
-            #Move to next column if the rows are more than 4 lines
-            if i > 4:
-                i = 0
-                j += 2
+            # Move to next column if the rows are more than 4 lines
+            if j > 6:
+                i += 1
+                j = 0
 
         self.RequiredParamasBox.setLayout(layout)
 
@@ -136,7 +136,7 @@ class MyApp(QMainWindow):
 
         i = j = 0
         for key in self.args.optional:
-            i += 1
+            j += 2
             label = QLabel(key)
             line = QLineEdit()
             layout.addWidget(label, i, j)
@@ -144,10 +144,10 @@ class MyApp(QMainWindow):
             self.labels.append(label)
             self.lines.append(line)
 
-            #Move to next column if the rows are more than 4 lines
-            if i >= 4:
-                i = 0
-                j += 2
+            # Move to next column if the rows are more than 4 lines
+            if j > 6:
+                i += 1
+                j = 0
 
         self.OptionalParamsBox.setLayout(layout)
 
@@ -158,13 +158,16 @@ class MyApp(QMainWindow):
         layout = QVBoxLayout()
         layout.addWidget(self.textedit)
 
+        clearConsoleBtn = QPushButton("Clear Console")
+        clearConsoleBtn.clicked.connect(self.clearConsole)
+        layout.addWidget(clearConsoleBtn)
         self.ConsoleBox.setLayout(layout)
 
     def createSettingsBox(self):
         self.SettingsBox = QGroupBox("Settings")
 
         modelComboBox = QComboBox()
-        modelComboBox.addItem("Counterfactual Regression Network (CFRNet)")
+        modelComboBox.addItem("Counterfactual Regression Network (CRFNet)")
         modelComboBox.addItem("Causal Effect Inference with Deep Latent-Variable Models (CEVAE)")
         modelComboBox.addItem("Bayesian Additive Regression Trees (BART)")
         modelComboBox.addItem("Causal Forests")
@@ -174,8 +177,8 @@ class MyApp(QMainWindow):
         modelComboBox.activated[str].connect(self.modelChoice)
 
         dataComboBox = QComboBox()
-        dataComboBox.addItem("IHDP")
         dataComboBox.addItem("Jobs")
+        dataComboBox.addItem("IHDP")
         dataComboBox.activated[str].connect(self.dataChoice)
 
         layout = QVBoxLayout()
@@ -183,11 +186,35 @@ class MyApp(QMainWindow):
         layout.addWidget(dataComboBox)
 
         self.SettingsBox.setLayout(layout)
-        self.reset()
 
+    def createParamsBox(self):
+        self.ParamsBox = QWidget(self)
+
+        layout = QVBoxLayout()
+
+        self.createRequiredParamsBox()
+        layout.addWidget(self.RequiredParamasBox)
+
+        self.detailsButton = QToolButton()
+        self.detailsButton.setText("Less...")
+        self.detailsButton.setCheckable(True)
+        self.detailsButton.setChecked(True)
+        self.detailsButton.setArrowType(Qt.UpArrow)
+        self.detailsButton.setAutoRaise(True)
+        self.detailsButton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        self.detailsButton.clicked.connect(self.showDetail)
+        layout.addWidget(self.detailsButton)
+
+        self.createOptionalParamsBox()
+        layout.addWidget(self.OptionalParamsBox)
+
+        resetParamsBtn = QPushButton("Reset Params")
+        resetParamsBtn.clicked.connect(self.resetParams)
+        layout.addWidget(resetParamsBtn)
+
+        self.ParamsBox.setLayout(layout)
     def modelChoice(self, text):
-        self.mainLayout.removeWidget(self.RequiredParamasBox)
-        self.mainLayout.removeWidget(self.OptionalParamsBox)
+        self.mainLayout.removeWidget(self.ParamsBox)
         if text == "Counterfactual Regression Network (CRFNet)":
             self.args = args.CFRNet()
         elif text == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
@@ -203,22 +230,19 @@ class MyApp(QMainWindow):
         elif text == "Local similarity preserved individual treatment effect (SITE)":
             self.args = args.SITE()
         else:
-            print("not implemented")
-        self.createRequiredParamsBox()
-        self.createOptionalParamsBox()
+            print("Combobox Error occured")
 
-        self.mainLayout.addWidget(self.RequiredParamasBox, 1, 0)
-        self.mainLayout.addWidget(self.OptionalParamsBox, 3, 0)
-
-        self.RequiredParamasBox.update()
-        self.OptionalParamsBox.update()
+        self.modelName = text
+        self.createParamsBox()
+        self.mainLayout.addWidget(self.ParamsBox, 1, 0)
 
     def dataChoice(self, text):
-        if text == "IHDP":
-            self.dataset = "IHDP"
-        elif text == "Jobs":
-            self.dataset = "Jobs"
+        self.dataset = text
 
+    def resetParams(self):
+        lines = self.lines
+        for i, line in enumerate(lines):
+            line.setText("")
     def runModel(self):
         self.changeBtnStatus()
         self.createCommand()
@@ -266,6 +290,9 @@ class MyApp(QMainWindow):
         lines = self.lines
         for i, line in enumerate(lines):
             line.setText("")
+        self.clearConsole()
+
+    def clearConsole(self):
         self.textedit.setText("")
 
     def showDetail(self):
@@ -331,10 +358,10 @@ class MyApp(QMainWindow):
     def createResultTabs(self):
         self.ResultTabs = QTabWidget()
 
-        # self.rankTab = Tab1()
+        self.rankTab = Tab1()
         # self.expTab = Tab2()
-        #
-        # self.ResultTabs.addTab(self.rankTab, "Comparison")
+
+        self.ResultTabs.addTab(self.rankTab, "Comparison")
         # self.ResultTabs.addTab(self.expTab, "Hyperparameter Sesarch")
 
 if __name__ == '__main__':

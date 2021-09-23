@@ -10,7 +10,8 @@ class CFRNet:
                 "datadir",
                 "dataform",
                 "data_test",
-                "imb_fun"]
+                "imb_fun",
+                "output_csv"]
     optional = ["n_in",
                 "n_out",
                 "rep_weight_decay",
@@ -30,7 +31,6 @@ class CFRNet:
                 "wass_bpt",
                 "varsel",
                 "sparse",
-                "seed ",
                 "repetitions",
                 "use_p_correction",
                 "optimizer",
@@ -40,6 +40,7 @@ class CFRNet:
                 "save_rep",
                 "val_part",
                 "split_output",
+                "seed",
                 "reweight_sample"]
 
 
@@ -157,7 +158,7 @@ class DRNet:
                 "Wass_bpt",
                 "Varsel",
                 "Sparse",
-                "Seed ",
+                "Seed",
                 "Repetitions",
                 "Use_P_correction",
                 "Optimizer",
@@ -204,7 +205,7 @@ class SITE:
                 "Wass_bpt",
                 "Varsel",
                 "Sparse",
-                "Seed ",
+                "Seed",
                 "Repetitions",
                 "Use_P_correction",
                 "Optimizer",

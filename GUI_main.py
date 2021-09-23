@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-import model
+import threadModel
 import args
 from queue import Queue
 from GUI_tab import Tab1, Tab2
@@ -69,11 +69,10 @@ class MyApp(QMainWindow):
         self.mainLayout.addWidget(self.ParamsBox, 1, 0)
         self.mainLayout.addWidget(self.ConsoleBox, 2, 0)
         self.mainLayout.addWidget(self.ButtonBox, 3, 0)
-        self.setLayout(self.mainLayout)
 
         self.mainWidget = QWidget()
-        self.mainWidget.setLayout(self.mainLayout)
         self.setCentralWidget(self.mainWidget)
+        self.mainWidget.setLayout(self.mainLayout)
 
         self.setWindowIcon(self.style().standardIcon(getattr(QStyle, 'SP_FileDialogListView')))
         self.setWindowTitle('CIKM Demo Tutorial')
@@ -97,7 +96,7 @@ class MyApp(QMainWindow):
         return widget
 
     def createParamsBox(self):
-        widget = QWidget(self)
+        widget = QWidget()
         layout = QVBoxLayout()
 
         self.paramLabels = list()
@@ -251,7 +250,6 @@ class MyApp(QMainWindow):
             self.ParamsBox = self.createParamsBox()
 
             self.mainLayout.addWidget(self.ParamsBox, 1, 0)
-            self.mainWidget.setLayout(self.mainLayout)
             self.mainLayout.update()
 
     def updateConsoleWidget(self):
@@ -277,12 +275,12 @@ class MyApp(QMainWindow):
         self.start_thread()
 
     def saveResult(self):
-        self.reset()
+        # self.reset()
         self.changeBtnStatus()
-
+        self.runButton.setEnabled(True)
+        self.saveButton.setEnabled(False)
     def updateStatus(self):
         self.changeBtnStatus()
-        outdir = self.newParamDict["outdir"]
         timestamp =datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
 
         filename = "result_" + timestamp + ".json"
@@ -292,6 +290,7 @@ class MyApp(QMainWindow):
         result["params"] = self.newParamDict
         with open(filepath, "w") as file:
             json.dump(result, file, indent=3)
+
     def extractEvaluation(self):
         for line in self.textedit.toPlainText().split("\n"):
             if "Policy Risk" in line or "ATT" in line:
@@ -322,7 +321,11 @@ class MyApp(QMainWindow):
 
         self.command = self.command + " ".join(options) + " --dataset %s" % (self.dataset)
         self.experiments = submitParams["experiments"]
+        self.outdir = submitParams["outdir"]
+        print("*****************************************COMMAND RECEIVED*******************************************")
         print(self.command)
+        print("********************************************START RUNNING********************************************")
+
     @pyqtSlot(str)
     def append_text(self, text):
         self.textedit.moveCursor(QTextCursor.End)
@@ -330,21 +333,24 @@ class MyApp(QMainWindow):
 
     @pyqtSlot()
     def start_thread(self):
-        self.thread = QThread()
-        self.backendApp = model.backendApp(self.command, self.dataset, self.modelName, self.experiments)
-        self.backendApp.moveToThread(self.thread)
-        self.thread.setTerminationEnabled(True)
-        self.thread.started.connect(self.backendApp.run)
-        self.thread.start()
+        # app = QCoreApplication([])
+        self.objThread = QThread()
+        self.obj = threadModel.backgroundApp(self.command, self.outdir)
+        self.obj.moveToThread(self.objThread)
+        # self.objThread.setTerminationEnabled(True)
+        self.obj.finished.connect(self.objThread.quit)
+        self.objThread.started.connect(self.obj.run)
+        self.objThread.finished.connect(self.changeBtnStatus)
+        self.objThread.start()
 
     def changeBtnStatus(self):
         if self.runButton.isEnabled():
             self.runButton.setEnabled(False)
-            self.saveButton.setEnabled(True)
-
+        #     self.saveButton.setEnabled(True)
+        #
         else:
             self.runButton.setEnabled(True)
-            self.saveButton.setEnabled(False)
+        # self.saveButton.setEnabled(True)
 
     def showDetail(self):
         if self.detailsButton.isChecked():
@@ -361,10 +367,10 @@ class MyApp(QMainWindow):
         name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
         if name == "":
             return 0
-        file = open(name, 'r')
         try:
-            with file:
+            with open(name, 'r') as file:
                 text = file.read()
+                #Filter for empty line and Windows carriage return
                 text = text.replace("\r\n", "\n")
                 text = text.strip()
             self.file_validation(text)
@@ -373,17 +379,17 @@ class MyApp(QMainWindow):
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
-            msg.setInformativeText("Please check if you selected has the correct format")
+            msg.setInformativeText("Please check if the file has the correct format 'key value'")
             msg.setWindowTitle("Error")
             msg.exec_()
 
     def file_validation(self, text):
         self.newParamDict = self.delimitParamsDict(text)
         newParamSet = set([param.lower() for param in self.newParamDict.keys()])
+
         requiredParamSet = set([param.lower() for param in self.args.required])
         optionalParamSet = set([param.lower() for param in self.args.optional])
         unionParamSet = set.union(requiredParamSet, optionalParamSet)
-
         if newParamSet.issubset(unionParamSet):
             if not requiredParamSet.issubset(newParamSet):
                 msg = QMessageBox(self)
@@ -399,10 +405,11 @@ class MyApp(QMainWindow):
                     line.setText(val)
 
         else:
+            setDifference = str(newParamSet.difference(unionParamSet))
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
-            msg.setInformativeText('This file cannot be loaded because it has undefined parameters')
+            msg.setInformativeText('This file cannot be loaded because it has undefined parameters ' + setDifference)
             msg.setWindowTitle("Error")
             msg.exec_()
 

@@ -32,7 +32,11 @@ table4 ={
     "CFRNET1":"0.14",
     "CFRNET2":"0.08"
 }
-
+class FixFigureCanvas(FigureCanvas):
+    def resizeEvent(self, event):
+        if event.size().width() <= 0 or event.size().height() <= 0:
+            return
+        super(FixFigureCanvas, self).resizeEvent(event)
 class Tab1(QTabBar):
     def __init__(self):
         super().__init__()
@@ -40,7 +44,7 @@ class Tab1(QTabBar):
 
         plotLayout = QHBoxLayout()
         self.figure = plt.figure()
-        self.canvas = FigureCanvas(self.figure)
+        self.canvas = FixFigureCanvas(self.figure)
         self.plot()
         plotLayout.addWidget(self.canvas)
 

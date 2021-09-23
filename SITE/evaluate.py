@@ -73,13 +73,34 @@ def evaluate(config_file, overwrite=False, filters=None):
         res_dict['rmse_ite'] = float(np.mean(np.abs(eval_results['test'].get("rmse_ite"))))
     except:
         res_dict['rmse_ite'] = float(0)
-    res_dict['ate_pred'] = float(np.mean(np.abs(eval_results['test'].get("ate_pred"))))
-    res_dict['att_pred'] = float(np.mean(np.abs(eval_results['test'].get("att_pred"))))
-    res_dict['bias_att'] = float(np.mean(np.abs(eval_results['test'].get("bias_att"))))
-    res_dict['atc_pred'] = float(np.mean(np.abs(eval_results['test'].get("atc_pred"))))
-    res_dict['bias_atc'] = float(np.mean(np.abs(eval_results['test'].get("bias_atc"))))
-    res_dict['bias_ate'] = float(np.mean(np.abs(eval_results['test'].get("bias_ate"))))
-    res_dict['rmse_fact'] = float(np.mean(np.abs(eval_results['test'].get("rmse_fact"))))
+    try:
+        res_dict['ate_pred'] = float(np.mean(np.abs(eval_results['test'].get("ate_pred"))))
+    except:
+        res_dict['ate_pred'] = float(0)
+    try:
+        res_dict['att_pred'] = float(np.mean(np.abs(eval_results['test'].get("att_pred"))))
+    except:
+        res_dict['att_pred'] = float(0)
+    try:
+        res_dict['bias_att'] = float(np.mean(np.abs(eval_results['test'].get("bias_att"))))
+    except:
+        res_dict['bias_att'] = float(0)
+    try:
+        res_dict['atc_pred'] = float(np.mean(np.abs(eval_results['test'].get("atc_pred"))))
+    except:
+        res_dict['atc_pred'] = float(0)
+    try:
+        res_dict['bias_ate'] = float(np.mean(np.abs(eval_results['test'].get("bias_ate"))))
+    except:
+        res_dict['bias_ate'] = float(0)
+    try:
+        res_dict['bias_atc'] = float(np.mean(np.abs(eval_results['test'].get("bias_atc"))))
+    except:
+        res_dict['bias_atc'] = float(0)
+    try:
+        res_dict['rmse_fact'] = float(np.mean(np.abs(eval_results['test'].get("rmse_fact"))))
+    except:
+        res_dict['rmse_fact'] = float(0)
     try:
         res_dict['policy_value'] = float(np.mean(np.abs(eval_results['test'].get("policy_value"))))
     except:
@@ -103,7 +124,17 @@ def evaluate(config_file, overwrite=False, filters=None):
     res = pd.DataFrame.from_dict([res_dict])
     res.columns = ["MODEL", "DATASET", "RMSE_ITE", "ATE_PRED", "ATT_PRED", "BIAS_ATT", "ATC_PRED", "BIAS_ATC",
                    "BIAS_ATE", "RMSE_FACT", "POLICY_CURVE", "POLICY_VALUE", "PEHE", "PEHE_NN", "POLICY_RISK"]
-    print(res["PEHE"].values[0])
+    fname = cfg["datadir"].strip() + cfg["data_test"].strip()
+    if fname[-3:] == 'npz':
+        data_in = np.load(fname)
+    if (cfg["dataset"].lower().strip() == "ihdp"):
+        ate = np.mean(data_in["mu1"] - data_in["mu0"])
+        error_ate = np.abs(res["ATE_PRED"].values[0] - ate)
+        print("PEHE is ", round(res["PEHE"].values[0], 2), "and error in ATE is ", round(error_ate, 2))
+    else:
+        att = np.mean(data_in["ate"])
+        error_att = np.abs(res["ATT_PRED"].values[0] - att)
+        print("Policy Risk is ", round(res["POLICY_RISK"].values[0], 2), "and error in ATT is ", round(error_att, 2))
     '''filename = os.getcwd() + "\Results.csv"
     res.to_csv(filename, mode="a", header=False, index=False)
     '''

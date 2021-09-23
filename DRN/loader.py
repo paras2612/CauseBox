@@ -7,7 +7,6 @@ def load_result_file(file):
     arr = np.load(file)
 
     D = dict([(k, arr[k]) for k in arr.keys()])
-    print(D)
 
     return D
 
@@ -95,7 +94,7 @@ def load_results(output_dir):
 
 def load_data(datapath):
     """ Load dataset """
-    print(datapath)
+    #print(datapath)
     arr = np.load(datapath)
     xs = arr['x']
 

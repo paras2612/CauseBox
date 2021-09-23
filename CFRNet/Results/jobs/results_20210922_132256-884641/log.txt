@@ -1,0 +1,54 @@
+Training with hyperparameters: alpha=0.0001, lambda=0
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.test.npz
+Loaded data with shape [2570,17]
+Defining graph...
+
+Training on experiment 1/2...
+0	Obj: 0.808,	F: 0.921,	Cf: nan,	Imb: 2.3e-07,	Val: 0.928,	ValImb: 2e-07,	ValObj: 0.66
+100	Obj: 0.134,	F: 0.342,	Cf: nan,	Imb: 5,	Val: 0.333,	ValImb: 4.9,	ValObj: 0.16
+200	Obj: 0.128,	F: 0.329,	Cf: nan,	Imb: 3.6,	Val: 0.321,	ValImb: 3.5,	ValObj: 0.15
+300	Obj: 0.125,	F: 0.324,	Cf: nan,	Imb: 3.1,	Val: 0.327,	ValImb: 3.1,	ValObj: 0.15
+400	Obj: 0.118,	F: 0.315,	Cf: nan,	Imb: 2.5,	Val: 0.315,	ValImb: 2.5,	ValObj: 0.14
+500	Obj: 0.111,	F: 0.303,	Cf: nan,	Imb: 2,	Val: 0.300,	ValImb: 1.9,	ValObj: 0.13
+600	Obj: 0.111,	F: 0.303,	Cf: nan,	Imb: 2.2,	Val: 0.299,	ValImb: 2.1,	ValObj: 0.13
+700	Obj: 0.111,	F: 0.309,	Cf: nan,	Imb: 2.5,	Val: 0.302,	ValImb: 2.5,	ValObj: 0.13
+800	Obj: 0.109,	F: 0.298,	Cf: nan,	Imb: 2.2,	Val: 0.298,	ValImb: 2.1,	ValObj: 0.14
+900	Obj: 0.107,	F: 0.296,	Cf: nan,	Imb: 1.8,	Val: 0.296,	ValImb: 1.8,	ValObj: 0.14
+1000	Obj: 0.103,	F: 0.297,	Cf: nan,	Imb: 2,	Val: 0.299,	ValImb: 1.9,	ValObj: 0.13
+1100	Obj: 0.103,	F: 0.296,	Cf: nan,	Imb: 2.2,	Val: 0.290,	ValImb: 2.1,	ValObj: 0.12
+1200	Obj: 0.101,	F: 0.294,	Cf: nan,	Imb: 2.2,	Val: 0.298,	ValImb: 2.2,	ValObj: 0.13
+1300	Obj: 0.102,	F: 0.293,	Cf: nan,	Imb: 2,	Val: 0.289,	ValImb: 1.9,	ValObj: 0.12
+1400	Obj: 0.098,	F: 0.290,	Cf: nan,	Imb: 2.1,	Val: 0.292,	ValImb: 2.1,	ValObj: 0.13
+1500	Obj: 0.097,	F: 0.290,	Cf: nan,	Imb: 2.1,	Val: 0.290,	ValImb: 2.1,	ValObj: 0.12
+1600	Obj: 0.096,	F: 0.290,	Cf: nan,	Imb: 2.3,	Val: 0.293,	ValImb: 2.2,	ValObj: 0.13
+1700	Obj: 0.098,	F: 0.290,	Cf: nan,	Imb: 1.9,	Val: 0.294,	ValImb: 1.9,	ValObj: 0.13
+1800	Obj: 0.099,	F: 0.291,	Cf: nan,	Imb: 1.8,	Val: 0.292,	ValImb: 1.8,	ValObj: 0.12
+1900	Obj: 0.095,	F: 0.288,	Cf: nan,	Imb: 1.8,	Val: 0.287,	ValImb: 1.8,	ValObj: 0.12
+1999	Obj: 0.096,	F: 0.293,	Cf: nan,	Imb: 2,	Val: 0.301,	ValImb: 1.9,	ValObj: 0.14
+Saving result to D:\PycharmProjects\pythonProject\CFRNet\Results\jobs\results_20210922_132256-884641\...
+
+Training on experiment 2/2...
+0	Obj: 0.779,	F: 0.923,	Cf: nan,	Imb: 2.5e-07,	Val: 0.924,	ValImb: 2.3e-07,	ValObj: 0.89
+100	Obj: 0.170,	F: 0.359,	Cf: nan,	Imb: 4.2,	Val: 0.343,	ValImb: 4.3,	ValObj: 0.16
+200	Obj: 0.150,	F: 0.332,	Cf: nan,	Imb: 3,	Val: 0.324,	ValImb: 3,	ValObj: 0.16
+300	Obj: 0.135,	F: 0.318,	Cf: nan,	Imb: 2.2,	Val: 0.307,	ValImb: 2.2,	ValObj: 0.14
+400	Obj: 0.130,	F: 0.310,	Cf: nan,	Imb: 1.9,	Val: 0.297,	ValImb: 1.8,	ValObj: 0.14
+500	Obj: 0.120,	F: 0.303,	Cf: nan,	Imb: 2.1,	Val: 0.292,	ValImb: 2,	ValObj: 0.14
+600	Obj: 0.120,	F: 0.308,	Cf: nan,	Imb: 2.1,	Val: 0.302,	ValImb: 2,	ValObj: 0.15
+700	Obj: 0.115,	F: 0.298,	Cf: nan,	Imb: 2.1,	Val: 0.290,	ValImb: 2,	ValObj: 0.14
+800	Obj: 0.115,	F: 0.297,	Cf: nan,	Imb: 2.2,	Val: 0.290,	ValImb: 2.2,	ValObj: 0.14
+900	Obj: 0.113,	F: 0.296,	Cf: nan,	Imb: 1.8,	Val: 0.294,	ValImb: 1.7,	ValObj: 0.16
+1000	Obj: 0.111,	F: 0.295,	Cf: nan,	Imb: 2,	Val: 0.294,	ValImb: 1.9,	ValObj: 0.16
+1100	Obj: 0.107,	F: 0.292,	Cf: nan,	Imb: 1.6,	Val: 0.288,	ValImb: 1.5,	ValObj: 0.14
+1200	Obj: 0.106,	F: 0.294,	Cf: nan,	Imb: 1.6,	Val: 0.292,	ValImb: 1.5,	ValObj: 0.15
+1300	Obj: 0.113,	F: 0.294,	Cf: nan,	Imb: 1.8,	Val: 0.298,	ValImb: 1.7,	ValObj: 0.18
+1400	Obj: 0.104,	F: 0.290,	Cf: nan,	Imb: 1.6,	Val: 0.290,	ValImb: 1.5,	ValObj: 0.15
+1500	Obj: 0.103,	F: 0.292,	Cf: nan,	Imb: 1.5,	Val: 0.294,	ValImb: 1.4,	ValObj: 0.16
+1600	Obj: 0.114,	F: 0.293,	Cf: nan,	Imb: 1.7,	Val: 0.298,	ValImb: 1.6,	ValObj: 0.17
+1700	Obj: 0.106,	F: 0.289,	Cf: nan,	Imb: 1.4,	Val: 0.293,	ValImb: 1.3,	ValObj: 0.16
+1800	Obj: 0.100,	F: 0.286,	Cf: nan,	Imb: 1.5,	Val: 0.290,	ValImb: 1.4,	ValObj: 0.15
+1900	Obj: 0.101,	F: 0.286,	Cf: nan,	Imb: 1.5,	Val: 0.291,	ValImb: 1.4,	ValObj: 0.15
+1999	Obj: 0.101,	F: 0.285,	Cf: nan,	Imb: 1.6,	Val: 0.290,	ValImb: 1.5,	ValObj: 0.15
+Saving result to D:\PycharmProjects\pythonProject\CFRNet\Results\jobs\results_20210922_132256-884641\...
+

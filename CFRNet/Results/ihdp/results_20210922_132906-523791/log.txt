@@ -1,0 +1,54 @@
+Training with hyperparameters: alpha=0.0001, lambda=0
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.train.npz/ihdp_npci_1-1000.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.test.npz/ihdp_npci_1-1000.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/2...
+0	Obj: 24.251,	F: 3.812,	Cf: 6.006,	Imb: 1.1e-07,	Val: 3.843,	ValImb: 1.1e-07,	ValObj: 24.60
+100	Obj: 1.507,	F: 1.333,	Cf: 1.418,	Imb: 34,	Val: 1.350,	ValImb: 33,	ValObj: 1.78
+200	Obj: 1.398,	F: 1.291,	Cf: 1.311,	Imb: 32,	Val: 1.304,	ValImb: 31,	ValObj: 1.58
+300	Obj: 1.541,	F: 1.273,	Cf: 1.505,	Imb: 26,	Val: 1.320,	ValImb: 25,	ValObj: 1.87
+400	Obj: 1.316,	F: 1.254,	Cf: 1.235,	Imb: 26,	Val: 1.286,	ValImb: 25,	ValObj: 1.62
+500	Obj: 1.311,	F: 1.242,	Cf: 1.275,	Imb: 20,	Val: 1.285,	ValImb: 20,	ValObj: 1.62
+600	Obj: 1.235,	F: 1.208,	Cf: 1.224,	Imb: 18,	Val: 1.249,	ValImb: 17,	ValObj: 1.55
+700	Obj: 1.259,	F: 1.206,	Cf: 1.226,	Imb: 15,	Val: 1.259,	ValImb: 15,	ValObj: 1.58
+800	Obj: 1.306,	F: 1.218,	Cf: 1.229,	Imb: 12,	Val: 1.270,	ValImb: 12,	ValObj: 1.66
+900	Obj: 1.130,	F: 1.130,	Cf: 1.131,	Imb: 11,	Val: 1.187,	ValImb: 10,	ValObj: 1.47
+1000	Obj: 1.017,	F: 1.063,	Cf: 1.047,	Imb: 9.1,	Val: 1.150,	ValImb: 8.9,	ValObj: 1.34
+1100	Obj: 0.940,	F: 1.014,	Cf: 1.021,	Imb: 8.9,	Val: 1.091,	ValImb: 8.6,	ValObj: 1.24
+1200	Obj: 0.900,	F: 0.986,	Cf: 1.035,	Imb: 7.6,	Val: 1.078,	ValImb: 7.4,	ValObj: 1.25
+1300	Obj: 0.875,	F: 0.958,	Cf: 1.046,	Imb: 7,	Val: 1.064,	ValImb: 6.8,	ValObj: 1.25
+1400	Obj: 0.834,	F: 0.938,	Cf: 1.038,	Imb: 6.3,	Val: 1.053,	ValImb: 6.2,	ValObj: 1.19
+1500	Obj: 0.822,	F: 0.927,	Cf: 1.078,	Imb: 5.7,	Val: 1.057,	ValImb: 5.5,	ValObj: 1.27
+1600	Obj: 0.786,	F: 0.904,	Cf: 1.075,	Imb: 5.7,	Val: 1.053,	ValImb: 5.6,	ValObj: 1.24
+1700	Obj: 0.824,	F: 0.927,	Cf: 1.103,	Imb: 5.4,	Val: 1.075,	ValImb: 5.2,	ValObj: 1.26
+1800	Obj: 0.756,	F: 0.893,	Cf: 1.092,	Imb: 4.2,	Val: 1.071,	ValImb: 4.1,	ValObj: 1.31
+1900	Obj: 0.717,	F: 0.876,	Cf: 1.087,	Imb: 4.1,	Val: 1.075,	ValImb: 4,	ValObj: 1.32
+1999	Obj: 0.705,	F: 0.866,	Cf: 1.119,	Imb: 3.5,	Val: 1.090,	ValImb: 3.4,	ValObj: 1.40
+Saving result to D:\PycharmProjects\pythonProject\CFRNet\Results\ihdp\results_20210922_132906-523791\...
+
+Training on experiment 2/2...
+0	Obj: 43.397,	F: 5.434,	Cf: 7.775,	Imb: 1.4e-07,	Val: 5.469,	ValImb: 1.2e-07,	ValObj: 42.52
+100	Obj: 1.779,	F: 1.321,	Cf: 1.649,	Imb: 36,	Val: 1.344,	ValImb: 34,	ValObj: 1.99
+200	Obj: 1.582,	F: 1.259,	Cf: 1.626,	Imb: 31,	Val: 1.296,	ValImb: 29,	ValObj: 1.89
+300	Obj: 1.382,	F: 1.209,	Cf: 1.521,	Imb: 28,	Val: 1.219,	ValImb: 27,	ValObj: 1.69
+400	Obj: 1.297,	F: 1.209,	Cf: 1.387,	Imb: 27,	Val: 1.228,	ValImb: 25,	ValObj: 1.50
+500	Obj: 1.352,	F: 1.227,	Cf: 1.456,	Imb: 23,	Val: 1.268,	ValImb: 22,	ValObj: 1.67
+600	Obj: 1.271,	F: 1.200,	Cf: 1.320,	Imb: 23,	Val: 1.180,	ValImb: 22,	ValObj: 1.39
+700	Obj: 1.220,	F: 1.186,	Cf: 1.294,	Imb: 22,	Val: 1.170,	ValImb: 22,	ValObj: 1.32
+800	Obj: 1.260,	F: 1.191,	Cf: 1.320,	Imb: 21,	Val: 1.176,	ValImb: 20,	ValObj: 1.36
+900	Obj: 1.188,	F: 1.158,	Cf: 1.353,	Imb: 19,	Val: 1.174,	ValImb: 18,	ValObj: 1.40
+1000	Obj: 1.160,	F: 1.164,	Cf: 1.329,	Imb: 17,	Val: 1.177,	ValImb: 17,	ValObj: 1.39
+1100	Obj: 1.225,	F: 1.176,	Cf: 1.463,	Imb: 15,	Val: 1.227,	ValImb: 14,	ValObj: 1.60
+1200	Obj: 1.120,	F: 1.152,	Cf: 1.346,	Imb: 14,	Val: 1.176,	ValImb: 13,	ValObj: 1.41
+1300	Obj: 1.195,	F: 1.169,	Cf: 1.427,	Imb: 11,	Val: 1.231,	ValImb: 11,	ValObj: 1.59
+1400	Obj: 1.194,	F: 1.174,	Cf: 1.293,	Imb: 12,	Val: 1.156,	ValImb: 12,	ValObj: 1.27
+1500	Obj: 1.117,	F: 1.146,	Cf: 1.261,	Imb: 10,	Val: 1.157,	ValImb: 10,	ValObj: 1.26
+1600	Obj: 1.039,	F: 1.109,	Cf: 1.288,	Imb: 9,	Val: 1.159,	ValImb: 8.7,	ValObj: 1.34
+1700	Obj: 1.001,	F: 1.103,	Cf: 1.272,	Imb: 7.9,	Val: 1.171,	ValImb: 7.6,	ValObj: 1.35
+1800	Obj: 0.982,	F: 1.091,	Cf: 1.249,	Imb: 7,	Val: 1.161,	ValImb: 6.8,	ValObj: 1.34
+1900	Obj: 0.910,	F: 1.053,	Cf: 1.205,	Imb: 6.7,	Val: 1.123,	ValImb: 6.4,	ValObj: 1.23
+1999	Obj: 0.892,	F: 1.044,	Cf: 1.169,	Imb: 6.4,	Val: 1.111,	ValImb: 6.2,	ValObj: 1.13
+Saving result to D:\PycharmProjects\pythonProject\CFRNet\Results\ihdp\results_20210922_132906-523791\...
+

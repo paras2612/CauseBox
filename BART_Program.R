@@ -3,7 +3,7 @@ install.packages("abind",repos = "http://cran.us.r-project.org")
 install.packages("rmatio",repos = "http://cran.us.r-project.org")
 install.packages("BART", dependencies=TRUE,repos = "http://cran.us.r-project.org")
 install.packages("reticulate", dependencies=TRUE,repos = "http://cran.us.r-project.org")
-install.packages('Rcpp')
+install.packages('Rcpp',repos = "http://cran.us.r-project.org")
 library(Rcpp)
 library(BART)
 library(rmatio)
@@ -12,7 +12,6 @@ library(reticulate)
 
 
 args <- commandArgs(trailingOnly = TRUE)
-print(args)
 fn <- args[1]
 test_fn <- args[2]
 write_fn <- args[3]
@@ -135,9 +134,11 @@ for (tr in trs){
       bias_atc = atc_pred - mean(eff[T_test < 1])
       
     }
+    else{
     pehe_nn = 0
     policy_curve = 0
     policy_risk = 1 - policy_value
+    }
     df <- rbind(df, data.frame(model,dataset,rmse_ite,ate_pred,att_pred,bias_att,atc_pred,bias_atc,bias_ate,rmse_fact,policy_curve,policy_value,pehe,pehe_nn,policy_risk))
     
     
@@ -146,4 +147,3 @@ for (tr in trs){
 
 result_df = data.frame(model,dataset,mean(df[["rmse_ite"]]),mean(df[["ate_pred"]]),mean(df[["att_pred"]]),mean(df[["bias_att"]]),mean(df[["atc_pred"]]),mean(df[["bias_atc"]]),mean(df[["bias_ate"]]),mean(df[["rmse_fact"]]),mean(df[["policy_curve"]]),mean(df[["policy_value"]]),mean(df[["pehe"]]),mean(df[["pehe_nn"]]),mean(df[["policy_risk"]]))
 write.table(result_df,write_fn,sep = ",",col.names=FALSE,row.names=FALSE,append=TRUE)
-

@@ -105,11 +105,11 @@ def evaluate(config_file, overwrite=False, filters=None):
     if(cfg["dataset"].lower().strip()=="ihdp"):
         ate = np.mean(data_in["mu1"]-data_in["mu0"])
         error_ate = np.abs(res["ATE_PRED"].values[0]-ate)
-        print("PEHE is ", round(res["PEHE"].values[0],2), "and error in ATE is ",error_ate)
+        print("PEHE is ", round(res["PEHE"].values[0],2), "and error in ATE is ",round(error_ate,2))
     else:
-        att = np.mean(data_in["yf"]-data_in["ycf"])
+        att = np.mean(data_in["ate"])
         error_att = np.abs(res["ATT_PRED"].values[0] - att)
-        print("PEHE is ", round(res["POLICY_RISK"].values[0],2), "and error in ATT is ",error_att)
+        print("Policy Risk is ", round(res["POLICY_RISK"].values[0],2), "and error in ATT is ",round(error_att,2))
     '''filename = os.getcwd() + "\Results.csv"
 
     res.to_csv(filename,mode="a",header=False,index=False)'''

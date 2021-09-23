@@ -42,7 +42,7 @@ def evaluate(config_file, overwrite=False, filters=None):
 
     cfg = load_config(config_file)
     output_dir = cfg['outdir'].strip()
-    print(output_dir)
+    #print(output_dir)
 
     if not os.path.isdir(output_dir):
         raise Exception('Could not find output at path: %s' % output_dir)
@@ -105,7 +105,21 @@ def evaluate(config_file, overwrite=False, filters=None):
 
     res.to_csv(filename, mode="a", header=False, index=False)
     '''
-    print(res)
+    fname = cfg["datadir"].strip() + cfg["data_test"].strip()
+    if fname[-3:] == 'npz':
+        data_in = np.load(fname)
+
+    res = pd.DataFrame.from_dict([res_dict])
+    res.columns = ["MODEL", "DATASET", "RMSE_ITE", "ATE_PRED", "ATT_PRED", "BIAS_ATT", "ATC_PRED", "BIAS_ATC",
+                   "BIAS_ATE", "RMSE_FACT", "POLICY_CURVE", "POLICY_VALUE", "PEHE", "PEHE_NN", "POLICY_RISK"]
+    if (cfg["dataset"].lower().strip() == "ihdp"):
+        ate = np.mean(data_in["mu1"] - data_in["mu0"])
+        error_ate = np.abs(res["ATE_PRED"].values[0] - ate)
+        print("PEHE is ", round(res["PEHE"].values[0], 2), "and error in ATE is ", round(error_ate, 2))
+    else:
+        att = np.mean(data_in["ate"])
+        error_att = np.abs(res["ATT_PRED"].values[0] - att)
+        print("Policy Risk is ", round(res["POLICY_RISK"].values[0], 2), "and error in ATT is ", round(error_att, 2))
     # Sort by alpha
     # eval_results, configs = sort_by_config(eval_results, configs, 'p_alpha')
 

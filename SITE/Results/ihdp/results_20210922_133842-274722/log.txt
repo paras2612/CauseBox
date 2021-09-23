@@ -1,0 +1,10 @@
+Training with hyperparameters: p_pddm=0.32, r_mid_point_mini=0.32
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.train.npz/ihdp_npci_1-1000.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.test.npz/ihdp_npci_1-1000.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/10...
+0	Obj: 95.233,	F: 3.917,	Cf: 6.024,	PDDM: 2.2e+02,	mid_p: 3.8e-05,	Val: 3.558,	ValObj: 74.03
+100	Obj: 22.451,	F: 3.378,	Cf: 5.394,	PDDM: 7,	mid_p: 0.12,	Val: 3.050,	ValObj: 24.75
+200	Obj: 4.833,	F: 1.499,	Cf: 1.337,	PDDM: 9.2,	mid_p: 0.003,	Val: 1.518,	ValObj: 6.18

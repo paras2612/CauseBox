@@ -1,0 +1,54 @@
+Training with hyperparameters: p_pddm=0.32, r_mid_point_mini=0.32
+Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.train.npz/ihdp_npci_1-1000.train.npz
+Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/IHDP/ihdp_npci_1-1000.test.npz/ihdp_npci_1-1000.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/2...
+0	Obj: 95.233,	F: 3.917,	Cf: 6.024,	PDDM: 2.2e+02,	mid_p: 3.8e-05,	Val: 3.558,	ValObj: 74.03
+100	Obj: 22.451,	F: 3.378,	Cf: 5.394,	PDDM: 7,	mid_p: 0.12,	Val: 3.050,	ValObj: 24.75
+200	Obj: 5.989,	F: 1.576,	Cf: 1.848,	PDDM: 11,	mid_p: 0.51,	Val: 1.512,	ValObj: 6.47
+300	Obj: 3.557,	F: 1.514,	Cf: 1.459,	PDDM: 4.9,	mid_p: 0.53,	Val: 1.517,	ValObj: 7.78
+400	Obj: 3.423,	F: 1.498,	Cf: 1.375,	PDDM: 4.8,	mid_p: 0.39,	Val: 1.510,	ValObj: 8.18
+500	Obj: 4.789,	F: 1.517,	Cf: 1.569,	PDDM: 8.7,	mid_p: 0.58,	Val: 1.501,	ValObj: 6.75
+600	Obj: 4.897,	F: 1.516,	Cf: 1.590,	PDDM: 9.1,	mid_p: 0.55,	Val: 1.499,	ValObj: 5.30
+700	Obj: 3.204,	F: 1.553,	Cf: 2.031,	PDDM: 3.3,	mid_p: 0.52,	Val: 1.532,	ValObj: 8.93
+800	Obj: 3.164,	F: 1.505,	Cf: 1.593,	PDDM: 3.9,	mid_p: 0.49,	Val: 1.487,	ValObj: 6.41
+900	Obj: 3.687,	F: 1.490,	Cf: 1.429,	PDDM: 5.7,	mid_p: 0.4,	Val: 1.479,	ValObj: 5.86
+1000	Obj: 2.774,	F: 1.495,	Cf: 1.400,	PDDM: 3.1,	mid_p: 0.17,	Val: 1.479,	ValObj: 6.76
+1100	Obj: 4.361,	F: 1.740,	Cf: 2.761,	PDDM: 2.3,	mid_p: 0.23,	Val: 1.704,	ValObj: 7.32
+1200	Obj: 2.772,	F: 1.488,	Cf: 1.469,	PDDM: 2.7,	mid_p: 0.13,	Val: 1.497,	ValObj: 3.87
+1300	Obj: 2.826,	F: 1.530,	Cf: 1.783,	PDDM: 1.9,	mid_p: 0.21,	Val: 1.505,	ValObj: 4.10
+1400	Obj: 1.983,	F: 1.476,	Cf: 1.476,	PDDM: 0.27,	mid_p: 0.18,	Val: 1.500,	ValObj: 3.13
+1500	Obj: 1.997,	F: 1.457,	Cf: 1.379,	PDDM: 0.65,	mid_p: 0.14,	Val: 1.489,	ValObj: 2.42
+1600	Obj: 1.879,	F: 1.460,	Cf: 1.478,	PDDM: 0.15,	mid_p: 0.16,	Val: 1.488,	ValObj: 2.30
+1700	Obj: 1.797,	F: 1.445,	Cf: 1.375,	PDDM: 0.15,	mid_p: 0.12,	Val: 1.486,	ValObj: 2.52
+1800	Obj: 1.820,	F: 1.464,	Cf: 1.382,	PDDM: 0.15,	mid_p: 0.13,	Val: 1.482,	ValObj: 2.13
+1900	Obj: 1.753,	F: 1.457,	Cf: 1.337,	PDDM: 0.05,	mid_p: 0.1,	Val: 1.475,	ValObj: 2.39
+1999	Obj: 1.782,	F: 1.451,	Cf: 1.305,	PDDM: 0.23,	mid_p: 0.076,	Val: 1.466,	ValObj: 2.25
+Saving result to D:\PycharmProjects\pythonProject\SITE\Results\ihdp\results_20210922_133910-912768\...
+
+Training on experiment 2/2...
+0	Obj: 98.679,	F: 5.457,	Cf: 7.797,	PDDM: 1.7e+02,	mid_p: 6.4e-05,	Val: 5.418,	ValObj: 113.29
+100	Obj: 37.094,	F: 4.817,	Cf: 7.130,	PDDM: 0.53,	mid_p: 0.00015,	Val: 4.777,	ValObj: 47.15
+200	Obj: 2.127,	F: 1.387,	Cf: 1.507,	PDDM: 0.34,	mid_p: 0.0001,	Val: 1.470,	ValObj: 15.95
+300	Obj: 1.342,	F: 1.288,	Cf: 1.175,	PDDM: 0.053,	mid_p: 6e-05,	Val: 1.429,	ValObj: 15.63
+400	Obj: 1.348,	F: 1.288,	Cf: 1.176,	PDDM: 0.071,	mid_p: 5e-05,	Val: 1.429,	ValObj: 16.41
+500	Obj: 1.338,	F: 1.286,	Cf: 1.172,	PDDM: 0.055,	mid_p: 5.3e-05,	Val: 1.426,	ValObj: 15.76
+600	Obj: 1.276,	F: 1.261,	Cf: 1.166,	PDDM: 0.033,	mid_p: 0.00064,	Val: 1.388,	ValObj: 14.30
+700	Obj: 1.307,	F: 1.265,	Cf: 1.159,	PDDM: 0.056,	mid_p: 0.00011,	Val: 1.397,	ValObj: 16.32
+800	Obj: 1.212,	F: 1.206,	Cf: 1.145,	PDDM: 0.054,	mid_p: 0.00033,	Val: 1.304,	ValObj: 15.77
+900	Obj: 1.155,	F: 1.133,	Cf: 1.119,	PDDM: 0.16,	mid_p: 0.0079,	Val: 1.196,	ValObj: 16.78
+1000	Obj: 1.433,	F: 1.163,	Cf: 1.117,	PDDM: 0.79,	mid_p: 0.021,	Val: 1.252,	ValObj: 17.98
+1100	Obj: 1.103,	F: 1.111,	Cf: 1.105,	PDDM: 0.041,	mid_p: 0.022,	Val: 1.166,	ValObj: 14.57
+1200	Obj: 1.068,	F: 1.088,	Cf: 1.108,	PDDM: 0.046,	mid_p: 0.02,	Val: 1.121,	ValObj: 14.61
+1300	Obj: 1.046,	F: 1.075,	Cf: 1.108,	PDDM: 0.035,	mid_p: 0.016,	Val: 1.103,	ValObj: 15.08
+1400	Obj: 1.027,	F: 1.063,	Cf: 1.110,	PDDM: 0.025,	mid_p: 0.01,	Val: 1.096,	ValObj: 15.82
+1500	Obj: 1.026,	F: 1.054,	Cf: 1.108,	PDDM: 0.071,	mid_p: 0.009,	Val: 1.084,	ValObj: 15.44
+1600	Obj: 1.069,	F: 1.067,	Cf: 1.092,	PDDM: 0.081,	mid_p: 0.11,	Val: 1.100,	ValObj: 18.18
+1700	Obj: 1.203,	F: 1.059,	Cf: 1.095,	PDDM: 0.53,	mid_p: 0.068,	Val: 1.089,	ValObj: 16.08
+1800	Obj: 1.007,	F: 1.047,	Cf: 1.106,	PDDM: 0.026,	mid_p: 0.032,	Val: 1.080,	ValObj: 16.15
+1900	Obj: 0.986,	F: 1.040,	Cf: 1.110,	PDDM: 0.016,	mid_p: 0.028,	Val: 1.076,	ValObj: 15.53
+1999	Obj: 1.069,	F: 1.034,	Cf: 1.127,	PDDM: 0.34,	mid_p: 0.025,	Val: 1.073,	ValObj: 13.52
+Saving result to D:\PycharmProjects\pythonProject\SITE\Results\ihdp\results_20210922_133910-912768\...
+

@@ -42,6 +42,8 @@ class Tab1(QTabBar):
         super().__init__()
         layout = QVBoxLayout()
 
+        self.combobox()
+        layout.addWidget(self.modelComboBox)
         plotLayout = QHBoxLayout()
         self.figure = plt.figure()
         self.canvas = FixFigureCanvas(self.figure)
@@ -51,7 +53,7 @@ class Tab1(QTabBar):
         tableLayout = QHBoxLayout()
         self.table()
         tableLayout.addWidget(self.tableWidget1)
-        tableLayout.addWidget(self.tableWidget2)
+        # tableLayout.addWidget(self.tableWidget2)
 
         layout.addLayout(plotLayout)
         layout.addLayout(tableLayout)
@@ -63,7 +65,7 @@ class Tab1(QTabBar):
         self.figure.subplots_adjust(hspace=0.5)
         self.figure.subplots_adjust(wspace=0.5)
 
-        ax1 = self.figure.add_subplot(121)
+        ax1 = self.figure.add_subplot(111)
         x1 = table1.keys()
         y1 = [float(value) for value in table1.values()]
         ax1.bar(x1, y1, color=["red", "green", "blue", "black"])
@@ -72,14 +74,14 @@ class Tab1(QTabBar):
         ax1.set_xlabel('Model')
         plt.xticks(rotation=45)
 
-        ax2 = self.figure.add_subplot(122)
-        x2 = table2.keys()
-        y2 = [float(value) for value in table2.values()]
-        ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
-        ax2.set_title("Jobs Dataset")
-        ax2.set_ylabel('Policy Risk')
-        ax2.set_xlabel('Model')
-        plt.xticks(rotation=45)
+        # ax2 = self.figure.add_subplot(122)
+        # x2 = table2.keys()
+        # y2 = [float(value) for value in table2.values()]
+        # ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
+        # ax2.set_title("Jobs Dataset")
+        # ax2.set_ylabel('Policy Risk')
+        # ax2.set_xlabel('Model')
+        # plt.xticks(rotation=45)
 
         self.canvas.draw_idle()
 
@@ -99,20 +101,24 @@ class Tab1(QTabBar):
             self.tableWidget1.setItem(i, j+1, QTableWidgetItem(str(value)))
             i+=1
             j=0
-        self.tableWidget2 = QTableWidget(self.numrow, self.numcol)
-        self.tableWidget2.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.tableWidget2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.tableWidget2.setHorizontalHeaderLabels(
-            ['Model', 'Policy Risk']
-        )
-        self.tableWidget2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        i = j = 0
-        for key, value in table2.items():
-            self.tableWidget2.setItem(i, j, QTableWidgetItem(str(key)))
-            self.tableWidget2.setItem(i, j+1, QTableWidgetItem(str(value)))
-            i+=1
-            j=0
+        # self.tableWidget2 = QTableWidget(self.numrow, self.numcol)
+        # self.tableWidget2.setEditTriggers(QTableWidget.NoEditTriggers)
+        # self.tableWidget2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        # self.tableWidget2.setHorizontalHeaderLabels(
+        #     ['Model', 'Policy Risk']
+        # )
+        # self.tableWidget2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        # i = j = 0
+        # for key, value in table2.items():
+        #     self.tableWidget2.setItem(i, j, QTableWidgetItem(str(key)))
+        #     self.tableWidget2.setItem(i, j+1, QTableWidgetItem(str(value)))
+        #     i+=1
+        #     j=0
 
+    def combobox(self):
+        self.modelComboBox = QComboBox()
+        self.modelComboBox.addItem("IHDP")
+        self.modelComboBox.addItem("Jobs")
 class Tab2(QTabBar):
     def __init__(self):
         super().__init__()

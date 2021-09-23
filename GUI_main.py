@@ -321,7 +321,6 @@ class MyApp(QMainWindow):
 
         self.command = self.command + " ".join(options) + " --dataset %s" % (self.dataset)
         self.experiments = submitParams["experiments"]
-        self.outdir = submitParams["outdir"]
         print("*****************************************COMMAND RECEIVED*******************************************")
         print(self.command)
         print("********************************************START RUNNING********************************************")
@@ -333,11 +332,9 @@ class MyApp(QMainWindow):
 
     @pyqtSlot()
     def start_thread(self):
-        # app = QCoreApplication([])
         self.objThread = QThread()
-        self.obj = threadModel.backgroundApp(self.command, self.outdir)
+        self.obj = threadModel.backgroundApp(self.command, self.dataset, self.modelName, self.experiments)
         self.obj.moveToThread(self.objThread)
-        # self.objThread.setTerminationEnabled(True)
         self.obj.finished.connect(self.objThread.quit)
         self.objThread.started.connect(self.obj.run)
         self.objThread.finished.connect(self.changeBtnStatus)

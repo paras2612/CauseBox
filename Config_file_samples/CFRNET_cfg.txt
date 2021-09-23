@@ -15,7 +15,7 @@ dim_out 100
 batch_norm 0
 normalization none
 rbf_sigma 0.1
-experiments 1
+experiments 2
 iterations 100
 weight_init 0.01
 lrate_decay 0.95
@@ -23,7 +23,7 @@ wass_iterations 20
 wass_lambda 1
 wass_bpt 0
 varsel 0
-outdir E:/Downloads/CauseBox/CFRNet/Results/jobs
+outdir E:/Downloads/CauseBox/CFRNet/Results/jobs2
 datadir E:/Downloads/CauseBox/CFRNet/Dataset/Jobs/
 dataform jobs_DW_bin.new.10.train.npz
 data_test jobs_DW_bin.new.10.test.npz

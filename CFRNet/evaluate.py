@@ -40,8 +40,6 @@ def evaluate(config_file, overwrite=False, filters=None):
     cfg = load_config(config_file)
     output_dir = cfg['outdir'].strip()
 
-    #print(output_dir)
-
     if not os.path.isdir(output_dir):
         raise Exception('Could not find output at path: %s' % output_dir)
 
@@ -117,7 +115,7 @@ def evaluate(config_file, overwrite=False, filters=None):
     # Sort by alpha
     #eval_results, configs = sort_by_config(eval_results, configs, 'p_alpha')
 
-    
+
 
     # Print evaluation results
     '''

@@ -11,6 +11,7 @@ from DRN.evaluate import evaluate as dr_cfr_evaluate
 # from CEVAE.evaluation import Evaluator as cevae_evaluate
 from SITE import site_net as site_model
 from SITE.evaluation import evaluate as site_evaluate
+
 class backgroundApp(QThread):
     finished = pyqtSignal()
 
@@ -23,9 +24,6 @@ class backgroundApp(QThread):
 
     @pyqtSlot()
     def run(self):
-        print("Command: ", self.command)
-        print("Dataset: ", self.dataset)
-        print("Model: ", self.modelName)
         if self.modelName == "Counterfactual Regression Network (CFRNet)":
             CFRNet(self.command, self.dataset, self.experiments)
         elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":

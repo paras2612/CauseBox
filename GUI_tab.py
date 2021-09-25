@@ -42,8 +42,6 @@ class comparisonTab(QTabBar):
     def __init__(self):
         super().__init__()
         self.dataset = "Jobs"
-        self.figure = plt.figure()
-        self.canvas = FixFigureCanvas(self.figure)
         self.tabWindowGUI()
 
     def tabWindowGUI(self):
@@ -55,86 +53,90 @@ class comparisonTab(QTabBar):
         self.tableBox = self.tablebox()
         self.mainLayout.addWidget(self.tableBox, 2, 0)
         # self.resultBox = self.resultbox()
-        # self.mainLayout.addWidget(self.resultBox, 1, 0)
+        # self.mainLayout.addWidget(self.resultBox, 3, 0)
         self.setLayout(self.mainLayout)
 
     def drawPlot1(self):
-        self.figure.clf()
-        self.figure.subplots_adjust(hspace=0.5)
-        self.figure.subplots_adjust(wspace=0.5)
+        figure = plt.figure()
+        figure.clf()
+        figure.subplots_adjust(hspace=0.5)
+        figure.subplots_adjust(wspace=0.5)
+        canvas = FixFigureCanvas(figure)
 
-        ax1 = self.figure.add_subplot(111)
-        x1 = table1.keys()
-        y1 = [float(value) for value in table1.values()]
-        ax1.bar(x1, y1, color=["red", "green", "blue", "black"])
-        # ax1.set_title("IHDP Dataset")
-        ax1.set_ylabel('PEHE')
-        ax1.set_xlabel('Model')
+        ax = figure.add_subplot(111)
+        x = table1.keys()
+        y = [float(value) for value in table1.values()]
+        ax.bar(x, y, color=["red", "green", "blue", "black"])
+        # ax.set_title("IHDP Dataset")
+        ax.set_ylabel('PEHE')
+        ax.set_xlabel('Model')
         plt.xticks(rotation=45)
 
-        self.canvas.draw_idle()
-        return self.canvas
+        canvas.draw_idle()
+        return canvas
 
     def drawPlot2(self):
-        self.figure.clf()
-        self.figure.subplots_adjust(hspace=0.5)
-        self.figure.subplots_adjust(wspace=0.5)
+        figure = plt.figure()
+        figure.clf()
+        figure.subplots_adjust(hspace=0.5)
+        figure.subplots_adjust(wspace=0.5)
+        canvas = FixFigureCanvas(figure)
 
-        ax2 = self.figure.add_subplot(111)
-        x2 = table2.keys()
-        y2 = [float(value) for value in table2.values()]
-        ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
-        # ax2.set_title("Jobs Dataset")
-        ax2.set_ylabel('Policy Risk')
-        ax2.set_xlabel('Model')
+        ax = figure.add_subplot(111)
+        x = table2.keys()
+        y = [float(value) for value in table2.values()]
+        ax.bar(x, y, color=["red", "green", "blue", "black"])
+        # ax.set_title("Jobs Dataset")
+        ax.set_ylabel('Policy Risk')
+        ax.set_xlabel('Model')
         plt.xticks(rotation=45)
-        self.canvas.draw_idle()
-        return self.canvas
+        canvas.draw_idle()
+        return canvas
 
     def plotbox(self):
         if self.dataset == "IHDP":
-            self.canvas = self.drawPlot1()
+            canvas = self.drawPlot1()
         elif self.dataset == "Jobs":
-            self.canvas = self.drawPlot2()
+            canvas = self.drawPlot2()
         else:
             print("no such dataset available")
-        return self.canvas
+        return canvas
 
     def drawTable1(self):
-        self.numrow = 7
-        self.numcol = 2
-        self.tableWidget1 = QTableWidget(self.numrow, self.numcol)
-        self.tableWidget1.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.tableWidget1.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.tableWidget1.setHorizontalHeaderLabels(
+        numrow = 7
+        numcol = 2
+        widget = QTableWidget(numrow, numcol)
+        widget.setEditTriggers(QTableWidget.NoEditTriggers)
+        widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        widget.setHorizontalHeaderLabels(
             ['Model', 'PEHE']
         )
-        self.tableWidget1.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         i = j = 0
         for key, value in table1.items():
-            self.tableWidget1.setItem(i, j, QTableWidgetItem(str(key)))
-            self.tableWidget1.setItem(i, j+1, QTableWidgetItem(str(value)))
+            widget.setItem(i, j, QTableWidgetItem(str(key)))
+            widget.setItem(i, j+1, QTableWidgetItem(str(value)))
             i+=1
             j=0
-        return self.tableWidget1
+        return widget
 
     def drawTable2(self):
-        self.numrow = 7
-        self.numcol = 2
-        self.tableWidget2 = QTableWidget(self.numrow, self.numcol)
-        self.tableWidget2.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.tableWidget2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.tableWidget2.setHorizontalHeaderLabels(
+        numrow = 7
+        numcol = 2
+        widget = QTableWidget(numrow, numcol)
+        widget.setEditTriggers(QTableWidget.NoEditTriggers)
+        widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        widget.setHorizontalHeaderLabels(
             ['Model', 'Policy Risk']
         )
-        self.tableWidget2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         i = j = 0
         for key, value in table2.items():
-            self.tableWidget2.setItem(i, j, QTableWidgetItem(str(key)))
-            self.tableWidget2.setItem(i, j+1, QTableWidgetItem(str(value)))
+            widget.setItem(i, j, QTableWidgetItem(str(key)))
+            widget.setItem(i, j+1, QTableWidgetItem(str(value)))
             i+=1
             j=0
-        return self.tableWidget2
+        return widget
 
     def tablebox(self):
         if self.dataset == "IHDP":
@@ -217,8 +219,8 @@ class hyperparamsTab(QTabBar):
 
     def table(self):
         self.numrow = 50
-        self.numcol = 50
-        self.tableWidget = QTableWidget(self.numrow, self.numcol)
+        numcol = 50
+        self.tableWidget = QTableWidget(self.numrow, numcol)
         #Need to change dynamicall refelec attrivtues
         with open("ParamsInputCFR", "r") as file:
             text  = file.read()

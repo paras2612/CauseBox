@@ -4,6 +4,7 @@ from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as Navigatio
 import matplotlib.pyplot as plt
 import os
 import json
+import csv
 
 table1 ={
     "CFRNET":"1.67",
@@ -43,6 +44,31 @@ class comparisonTab(QTabBar):
         super().__init__()
         self.dataset = "Jobs"
         self.tabWindowGUI()
+
+    def updateResultData(self, filepath):
+        filepath = "Results_sample.csv"
+        try:
+            self.openCSV(filepath)
+        except:
+            print("Couldn't find the result file ", filepath)
+
+    def openCSV(self, filepath):
+        fields = []
+        rows = list()
+        with open(filepath, 'r') as csvfile:
+            # creating a csv reader object
+            csvreader = csv.reader(csvfile)
+
+            # extracting field names through first row
+            fields = next(csvreader)
+
+            # extracting each data row one by one
+            for row in csvreader:
+                rows.append(row)
+
+            # get total number of rows
+            print(rows)
+            print("Total no. of rows: %d"%(csvreader.line_num))
 
     def tabWindowGUI(self):
         self.mainLayout = QGridLayout()

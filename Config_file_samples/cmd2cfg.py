@@ -1,7 +1,7 @@
 import os
 
 #use sample_cmd as input format
-inname = "sample_cmd.txt"
+inname = "sample"
 with open(inname, "r") as f:
     cmd = f.readline()
     cmdList = cmd.split(" ")
@@ -19,7 +19,8 @@ with open(inname, "r") as f:
             values.append(value)
         i+=1
 
-outname = "CFRNET_cfg.txt"
+#BART format weird
+outname = "BART_cfg.txt"
 if len(keys) != len(values):
     assert "Key value pair not matching"
     exit(0)
@@ -31,4 +32,4 @@ with open(outname, "w") as f:
         f.write(key+" "+value+"\n")
 
 print("File converted to cfg format 'key value'")
-os.remove(inname)
+# os.remove(inname)

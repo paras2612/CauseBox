@@ -23,8 +23,8 @@ wass_iterations 20
 wass_lambda 1
 wass_bpt 0
 varsel 0
-outdir E:/Downloads/CauseBox/CFRNet/Results/jobs2
-datadir E:/Downloads/CauseBox/CFRNet/Dataset/Jobs/
+outdir CFRNet/Results/jobs2
+datadir CFRNet/Dataset/Jobs/
 dataform jobs_DW_bin.new.10.train.npz
 data_test jobs_DW_bin.new.10.test.npz
 sparse 0

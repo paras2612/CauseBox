@@ -137,7 +137,9 @@ class DRNet:
                 "Outdir",
                 "Datadir",
                 "Dataform",
-                "Data_test"]
+                "Data_test",
+                "output_csv",
+                "imb_fun"]
 
     optional = ["N_in",
                 "N_out",
@@ -184,7 +186,8 @@ class SITE:
                 "Outdir",
                 "Datadir",
                 "Dataform",
-                "Data_test"]
+                "Data_test",
+                "output_csv"]
 
     optional = ["N_in",
                 "N_out",
@@ -218,7 +221,8 @@ class SITE:
                 "Reweight_sample",
                 "Dim_c",
                 "Dim_s",
-                "Equal_sample"]
+                "Equal_sample",
+                "imb_fun"]
 
 
 if __name__ == "__main__":

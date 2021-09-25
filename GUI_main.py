@@ -5,10 +5,12 @@ from PyQt5.QtCore import *
 import threadModel
 import args
 from queue import Queue
-from GUI_tab import comparisonTab,hyperparamsTab
+from GUI_tab import comparisonTab, hyperparamsTab
 import json
 import os
 import datetime
+
+
 # import sip
 
 class WriteStream(object):
@@ -28,6 +30,7 @@ class MyReceiver(QObject):
     def __init__(self, queue, *args, **kwargs):
         QObject.__init__(self, *args, **kwargs)
         self.queue = queue
+
     @pyqtSlot()
     def run(self):
         while True:
@@ -80,18 +83,20 @@ class MyApp(QMainWindow):
         self.setCenter()
 
     def createButtonBox(self):
-        widget= QWidget()
+        widget = QWidget()
         layout = QHBoxLayout()
-        self.saveButton = QToolButton()
-        self.saveButton.setText("Save The Result To Database √")
-        self.saveButton.setEnabled(False)
+
         self.runButton = QToolButton()
         self.runButton.setText("Run The Model With Parameter √")
-        self.saveButton.clicked.connect(self.saveResult)
         self.runButton.clicked.connect(self.runModel)
 
+        self.updateButton = QToolButton()
+        self.updateButton.setText("Update The Results To DB √")
+        self.updateButton.setEnabled(False)
+        self.updateButton.clicked.connect(self.updateResult)
+
         layout.addWidget(self.runButton)
-        layout.addWidget(self.saveButton)
+        layout.addWidget(self.updateButton)
         widget.setLayout(layout)
         return widget
 
@@ -239,7 +244,7 @@ class MyApp(QMainWindow):
         if hasattr(self, 'SettingsBox'):
             self.mainLayout.removeWidget(self.SettingsBox)
             self.SettingsBox = self.createSettingsBox()
-            self.mainLayout.addWidget(self.SettingsBox,0,0)
+            self.mainLayout.addWidget(self.SettingsBox, 0, 0)
             self.mainLayout.update()
 
     def updateParamsWidget(self):
@@ -274,14 +279,14 @@ class MyApp(QMainWindow):
         self.createCommand()
         self.start_thread()
 
-    def saveResult(self):
-        # self.reset()
+    def updateResult(self):
+        filepath = "ask paras"
+        self.tab1.updateResultData(filepath)
         self.changeBtnStatus()
-        self.runButton.setEnabled(True)
-        self.saveButton.setEnabled(False)
+
     def updateStatus(self):
         self.changeBtnStatus()
-        timestamp =datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
 
         filename = "result_" + timestamp + ".json"
         filepath = os.getcwd() + "\\PlotData\\" + filename
@@ -341,13 +346,22 @@ class MyApp(QMainWindow):
         self.objThread.start()
 
     def changeBtnStatus(self):
-        if self.runButton.isEnabled():
+        isUpdated = self.updateButton.isEnabled()
+        isRunned = self.runButton.isEnabled()
+        if (not isUpdated) and isRunned:
             self.runButton.setEnabled(False)
-        #     self.saveButton.setEnabled(True)
-        #
-        else:
+            self.updateButton.setEnabled(False)
+
+        elif (not isUpdated) and (not isRunned):
+            self.runButton.setEnabled(False)
+            self.updateButton.setEnabled(True)
+
+        elif isUpdated and not isRunned:
             self.runButton.setEnabled(True)
-        # self.saveButton.setEnabled(True)
+            self.updateButton.setEnabled(False)
+
+        else:
+            print("entered unknown condition")
 
     def showDetail(self):
         if self.detailsButton.isChecked():
@@ -367,7 +381,7 @@ class MyApp(QMainWindow):
         try:
             with open(name, 'r') as file:
                 text = file.read()
-                #Filter for empty line and Windows carriage return
+                # Filter for empty line and Windows carriage return
                 text = text.replace("\r\n", "\n")
                 text = text.strip()
             self.file_validation(text)
@@ -429,15 +443,14 @@ class MyApp(QMainWindow):
         else:
             pass
 
-
     def createResultTabs(self):
         widget = QTabWidget()
 
-        self.rankTab = comparisonTab()
-        # self.expTab = hyperparamsTab()
+        self.tab1 = comparisonTab()
+        # self.tab2 = hyperparamsTab()
 
-        widget.addTab(self.rankTab, "Comparison")
-        # widget.addTab(self.expTab, "Hyperparameter Sesarch")
+        widget.addTab(self.tab1, "Comparison")
+        # widget.addTab(self.tab2, "Hyperparameter Sesarch")
         return widget
 
     def setCenter(self):
@@ -445,6 +458,8 @@ class MyApp(QMainWindow):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+
 if __name__ == '__main__':
     queue = Queue()
     sys.stdout = WriteStream(queue)

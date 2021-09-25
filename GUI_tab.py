@@ -37,30 +37,28 @@ class FixFigureCanvas(FigureCanvas):
         if event.size().width() <= 0 or event.size().height() <= 0:
             return
         super(FixFigureCanvas, self).resizeEvent(event)
-class Tab1(QTabBar):
+
+class comparisonTab(QTabBar):
     def __init__(self):
         super().__init__()
-        layout = QVBoxLayout()
-
-        self.combobox()
-        layout.addWidget(self.modelComboBox)
-        plotLayout = QHBoxLayout()
+        self.dataset = "Jobs"
         self.figure = plt.figure()
         self.canvas = FixFigureCanvas(self.figure)
-        self.plot()
-        plotLayout.addWidget(self.canvas)
+        self.tabWindowGUI()
 
-        tableLayout = QHBoxLayout()
-        self.table()
-        tableLayout.addWidget(self.tableWidget1)
-        # tableLayout.addWidget(self.tableWidget2)
+    def tabWindowGUI(self):
+        self.mainLayout = QGridLayout()
+        self.dataComboBox = self.combobox()
+        self.mainLayout.addWidget(self.dataComboBox, 0, 0)
+        self.plotBox = self.plotbox()
+        self.mainLayout.addWidget(self.plotBox, 1, 0)
+        self.tableBox = self.tablebox()
+        self.mainLayout.addWidget(self.tableBox, 2, 0)
+        # self.resultBox = self.resultbox()
+        # self.mainLayout.addWidget(self.resultBox, 1, 0)
+        self.setLayout(self.mainLayout)
 
-        layout.addLayout(plotLayout)
-        layout.addLayout(tableLayout)
-        self.setLayout(layout)
-
-
-    def plot(self):
+    def drawPlot1(self):
         self.figure.clf()
         self.figure.subplots_adjust(hspace=0.5)
         self.figure.subplots_adjust(wspace=0.5)
@@ -69,23 +67,40 @@ class Tab1(QTabBar):
         x1 = table1.keys()
         y1 = [float(value) for value in table1.values()]
         ax1.bar(x1, y1, color=["red", "green", "blue", "black"])
-        ax1.set_title("IHDP Dataset")
+        # ax1.set_title("IHDP Dataset")
         ax1.set_ylabel('PEHE')
         ax1.set_xlabel('Model')
         plt.xticks(rotation=45)
 
-        # ax2 = self.figure.add_subplot(122)
-        # x2 = table2.keys()
-        # y2 = [float(value) for value in table2.values()]
-        # ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
-        # ax2.set_title("Jobs Dataset")
-        # ax2.set_ylabel('Policy Risk')
-        # ax2.set_xlabel('Model')
-        # plt.xticks(rotation=45)
-
         self.canvas.draw_idle()
+        return self.canvas
 
-    def table(self):
+    def drawPlot2(self):
+        self.figure.clf()
+        self.figure.subplots_adjust(hspace=0.5)
+        self.figure.subplots_adjust(wspace=0.5)
+
+        ax2 = self.figure.add_subplot(111)
+        x2 = table2.keys()
+        y2 = [float(value) for value in table2.values()]
+        ax2.bar(x2, y2, color=["red", "green", "blue", "black"])
+        # ax2.set_title("Jobs Dataset")
+        ax2.set_ylabel('Policy Risk')
+        ax2.set_xlabel('Model')
+        plt.xticks(rotation=45)
+        self.canvas.draw_idle()
+        return self.canvas
+
+    def plotbox(self):
+        if self.dataset == "IHDP":
+            self.canvas = self.drawPlot1()
+        elif self.dataset == "Jobs":
+            self.canvas = self.drawPlot2()
+        else:
+            print("no such dataset available")
+        return self.canvas
+
+    def drawTable1(self):
         self.numrow = 7
         self.numcol = 2
         self.tableWidget1 = QTableWidget(self.numrow, self.numcol)
@@ -101,25 +116,80 @@ class Tab1(QTabBar):
             self.tableWidget1.setItem(i, j+1, QTableWidgetItem(str(value)))
             i+=1
             j=0
-        # self.tableWidget2 = QTableWidget(self.numrow, self.numcol)
-        # self.tableWidget2.setEditTriggers(QTableWidget.NoEditTriggers)
-        # self.tableWidget2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        # self.tableWidget2.setHorizontalHeaderLabels(
-        #     ['Model', 'Policy Risk']
-        # )
-        # self.tableWidget2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        # i = j = 0
-        # for key, value in table2.items():
-        #     self.tableWidget2.setItem(i, j, QTableWidgetItem(str(key)))
-        #     self.tableWidget2.setItem(i, j+1, QTableWidgetItem(str(value)))
-        #     i+=1
-        #     j=0
+        return self.tableWidget1
+
+    def drawTable2(self):
+        self.numrow = 7
+        self.numcol = 2
+        self.tableWidget2 = QTableWidget(self.numrow, self.numcol)
+        self.tableWidget2.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.tableWidget2.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.tableWidget2.setHorizontalHeaderLabels(
+            ['Model', 'Policy Risk']
+        )
+        self.tableWidget2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        i = j = 0
+        for key, value in table2.items():
+            self.tableWidget2.setItem(i, j, QTableWidgetItem(str(key)))
+            self.tableWidget2.setItem(i, j+1, QTableWidgetItem(str(value)))
+            i+=1
+            j=0
+        return self.tableWidget2
+
+    def tablebox(self):
+        if self.dataset == "IHDP":
+            self.tableBox = self.drawTable1()
+        elif self.dataset == "Jobs":
+            self.tableBox = self.drawTable2()
+        else:
+            print("no such dataset available")
+        return self.tableBox
+
+    def resultbox(self):
+        widget = QWidget()
+        layout = QVBoxLayout()
+        plotBox = self.plotbox()
+        layout.addWidget(plotBox)
+
+        tableBox = self.tablebox()
+        layout.addWidget(tableBox)
+        widget.setLayout(layout)
+        return widget
 
     def combobox(self):
-        self.modelComboBox = QComboBox()
-        self.modelComboBox.addItem("IHDP")
-        self.modelComboBox.addItem("Jobs")
-class Tab2(QTabBar):
+        self.dataComboBox = QComboBox()
+        self.dataComboBox.addItem("Jobs")
+        self.dataComboBox.addItem("IHDP")
+        self.dataComboBox.activated[str].connect(self.dataChoice)
+        return self.dataComboBox
+
+    def dataChoice(self, text):
+        self.dataset = text
+        self.updatePlotBox()
+        self.updateTableBox()
+
+    def updatePlotBox(self):
+        if hasattr(self, 'plotBox'):
+            self.mainLayout.removeWidget(self.plotBox)
+            self.plotBox = self.plotbox()
+            self.mainLayout.addWidget(self.plotBox, 1, 0)
+            self.mainLayout.update()
+
+    def updateTableBox(self):
+        if hasattr(self, 'tableBox'):
+            self.mainLayout.removeWidget(self.tableBox)
+            self.plotBox = self.tablebox()
+            self.mainLayout.addWidget(self.tableBox, 2, 0)
+            self.mainLayout.update()
+
+    def updateResultBox(self):
+        if hasattr(self, 'resultBox'):
+            self.mainLayout.removeWidget(self.resultBox)
+            self.plotBox = self.resultbox()
+            self.mainLayout.addWidget(self.resultBox, 1, 0)
+            self.mainLayout.update()
+
+class hyperparamsTab(QTabBar):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()

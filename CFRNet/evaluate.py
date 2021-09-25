@@ -83,7 +83,6 @@ def evaluate(config_file, overwrite=False, filters=None):
     res_dict['pehe'] = float(np.mean(np.abs(eval_results['test'].get("pehe"))))
     res_dict['pehe_nn'] = float(np.mean(np.abs(eval_results['test'].get("pehe_nn"))))
     res_dict['policy_risk'] = float(np.mean(np.abs(eval_results['test'].get("policy_risk"))))
-    '''
     try:
         filename = os.getcwd() + "\Results.csv"
         file1 = open(filename, 'a')
@@ -92,7 +91,6 @@ def evaluate(config_file, overwrite=False, filters=None):
 
     except:
         print("Unable to write to file")
-    '''
 
     fname = cfg["datadir"].strip() + cfg["data_test"].strip()
     if fname[-3:] == 'npz':

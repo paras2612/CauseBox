@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 import threadModel
 import args
 from queue import Queue
-from GUI_tab import Tab1, Tab2
+from GUI_tab import comparisonTab,hyperparamsTab
 import json
 import os
 import datetime
@@ -433,8 +433,8 @@ class MyApp(QMainWindow):
     def createResultTabs(self):
         widget = QTabWidget()
 
-        self.rankTab = Tab1()
-        # self.expTab = Tab2()
+        self.rankTab = comparisonTab()
+        # self.expTab = hyperparamsTab()
 
         widget.addTab(self.rankTab, "Comparison")
         # widget.addTab(self.expTab, "Hyperparameter Sesarch")

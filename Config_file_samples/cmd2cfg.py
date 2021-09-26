@@ -20,7 +20,9 @@ with open(inname, "r") as f:
         i+=1
 
 #BART format weird
-outname = "BART_cfg.txt"
+outname = "CEVAE_cfg.txt"
+print(len(keys))
+print(len(values))
 if len(keys) != len(values):
     assert "Key value pair not matching"
     exit(0)

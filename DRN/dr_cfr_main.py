@@ -215,11 +215,16 @@ def train(CFR, sess, train_step, D, I_valid, D_test, logfile, i_exp):
 
     return losses, preds_train, preds_test, reps, reps_test
 
-def run(outdir):
+def run(outdir, lis=None):
     """ Runs an experiment and stores result in outdir """
 
     ''' Set up paths and start log '''
-    FLAGS(sys.argv)
+    if(lis==None):
+        FLAGS(sys.argv)
+    else:
+        FLAGS(lis.split())
+    ''' Set up paths and start log '''
+    # FLAGS(sys.argv)
     npzfile = outdir+'result'
     npzfile_test = outdir+'result.test'
     repfile = outdir+'reps'

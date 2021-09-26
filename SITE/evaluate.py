@@ -135,9 +135,8 @@ def evaluate(config_file, overwrite=False, filters=None):
         att = np.mean(data_in["ate"])
         error_att = np.abs(res["ATT_PRED"].values[0] - att)
         print("Policy Risk is ", round(res["POLICY_RISK"].values[0], 2), "and error in ATT is ", round(error_att, 2))
-    '''filename = os.getcwd() + "\Results.csv"
+    filename = os.getcwd() + "\Results.csv"
     res.to_csv(filename, mode="a", header=False, index=False)
-    '''
 
 
 

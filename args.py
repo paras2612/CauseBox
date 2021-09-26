@@ -57,7 +57,13 @@ class CEVAE:
                 "Weight_decay",
                 "Seed",
                 "Train_path",
-                "Test_path"]
+                "Test_path",
+                "weight-decay",
+                "learning-rate",
+                "hidden-dim",
+                "batch-size",
+                "z-dim",
+                "hidden-layers"]
 
     optional = []
 

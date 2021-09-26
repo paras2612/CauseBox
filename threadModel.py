@@ -5,13 +5,8 @@ import os
 import sys
 from CFRNet.evaluate import evaluate as cfr_evaluate
 from SITE import evaluate as ev
-from DRN.evaluate import evaluate as dr_cfr_evaluate
+from DRN import evaluate as dev
 
-# from CEVAE import cevae as cevae_model
-# from CEVAE.evaluation import Evaluator as cevae_evaluate
-
-
-# from SITE import site_net_train as site_model
 class backgroundApp(QThread):
     finished = pyqtSignal()
 
@@ -26,8 +21,8 @@ class backgroundApp(QThread):
     def run(self):
         if self.modelName == "Counterfactual Regression Network (CFRNet)":
             CFRNet(self.command, self.dataset, self.experiments)
-        elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
-            CEVAE(self.command, self.dataset, self.experiments)
+        # elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
+        #     CEVAE(self.command, self.dataset, self.experiments)
         # elif self.modelName == "Bayesian Additive Regression Trees (BART)":
         #     BART(self.command, self.dataset, self.experiments)
         # elif self.modelName == "Causal Forests":
@@ -54,7 +49,6 @@ class CFRNet:
         except Exception as e:
             with open(config_dir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
-            print("Some problem occured")
 
         config_file = config_dir + 'config.txt'
         overwrite = False
@@ -63,40 +57,37 @@ class CFRNet:
 
 class DRNet:
     def __init__(self, command, dataset, experiments):
-        from DRN import dr_cfr as dr_cfr_model
+        import DRN.dr_cfr_main as drn
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         outdir = os.getcwd() + '\\DRN\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
         print("Output Directory: ", outdir)
         os.makedirs(outdir)
         try:
-            dr_cfr_model.run(outdir,command)
+            drn.run(outdir, command)
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
-            print("Some problem occured")
 
         config_file = outdir + 'config.txt'
         overwrite = False
         filters = None
-        dr_cfr_evaluate(config_file, overwrite, filters=filters)
+        #ERROR occur: TypeError: only size-1 arrays can be converted to Python scalars
+        dev.evaluate(config_file, overwrite, filters=filters)
 
 class CEVAE:
     def __init__(self, command, dataset, experiments):
+        from CEVAE.main import main as cevae_main
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         outdir = os.getcwd() + '\\CEVAE\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
         print("Output Directory: ", outdir)
         os.makedirs(outdir)
         try:
-            cevae_model.run(outdir,command)
+            #How to read parameter args like site and cfrnet?
+            cevae_main()
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
             print("Some problem occured")
-
-        config_file = outdir + 'config.txt'
-        overwrite = False
-        filters = None
-        cevae_evaluate(config_file, overwrite, filters=filters)
 
 class SITE:
     def __init__(self, command, dataset, experiments):
@@ -111,10 +102,67 @@ class SITE:
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
-            print("Some problem occured")
             print(e)
 
         config_file = outdir + 'config.txt'
         overwrite = False
         filters = None
         ev.evaluate(config_file, overwrite, filters=filters)
+
+# class PerfectMatch:
+#     def __init__(self, command, dataset, experiments):
+#         import PM.main as pm
+#         from PM.parameters import clip_percentage, parse_parameters
+#         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+#         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
+#         print("Output Directory: ", config_dir)
+#         os.makedirs(config_dir)
+#         try:
+#             app = pm.MainApplication(parse_parameters())
+#             app.run()#         except Exception as e:
+#             with open(config_dir + 'error.txt', 'w') as errfile:
+#                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
+#
+#         config_file = config_dir + 'config.txt'
+#         overwrite = False
+#         filters = None
+#         cfr_evaluate(config_file, overwrite, filters=filters)
+
+# class BART:
+#     def __init__(self, command, dataset, experiments):
+#         import PM.main as pm
+#         from PM.parameters import clip_percentage, parse_parameters
+#         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+#         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
+#         print("Output Directory: ", config_dir)
+#         os.makedirs(config_dir)
+#         try:
+#         process = subprocess.call(
+#             ["Rscript", sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]])#         except Exception as e:
+#             with open(config_dir + 'error.txt', 'w') as errfile:
+#                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
+#
+#         config_file = config_dir + 'config.txt'
+#         overwrite = False
+#         filters = None
+#         cfr_evaluate(config_file, overwrite, filters=filters)
+
+
+# class CausalForests:
+#     def __init__(self, command, dataset, experiments):
+#         import PM.main as pm
+#         from PM.parameters import clip_percentage, parse_parameters
+#         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+#         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
+#         print("Output Directory: ", config_dir)
+#         os.makedirs(config_dir)
+#         try:
+#         process = subprocess.call(
+#             ["Rscript", sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]])#         except Exception as e:
+#             with open(config_dir + 'error.txt', 'w') as errfile:
+#                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
+#
+#         config_file = config_dir + 'config.txt'
+#         overwrite = False
+#         filters = None
+#         cfr_evaluate(config_file, overwrite, filters=filters)

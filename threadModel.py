@@ -3,14 +3,14 @@ import datetime
 import traceback
 import os
 import sys
-from CFRNet import cfr_net_main as cfr_model
 from CFRNet.evaluate import evaluate as cfr_evaluate
-from DRN import dr_cfr as dr_cfr_model
+from SITE import evaluate as ev
 from DRN.evaluate import evaluate as dr_cfr_evaluate
+
 # from CEVAE import cevae as cevae_model
 # from CEVAE.evaluation import Evaluator as cevae_evaluate
-from SITE import site_net_train as site_modelqw
-from SITE.evaluation import evaluate as site_evaluate
+
+
 # from SITE import site_net_train as site_model
 class backgroundApp(QThread):
     finished = pyqtSignal()
@@ -44,6 +44,7 @@ class backgroundApp(QThread):
 
 class CFRNet:
     def __init__(self, command, dataset, experiments):
+        from CFRNet import cfr_net_main as cfr_model
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
         print("Output Directory: ", config_dir)
@@ -62,6 +63,7 @@ class CFRNet:
 
 class DRNet:
     def __init__(self, command, dataset, experiments):
+        from DRN import dr_cfr as dr_cfr_model
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         outdir = os.getcwd() + '\\DRN\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
         print("Output Directory: ", outdir)
@@ -98,13 +100,14 @@ class CEVAE:
 
 class SITE:
     def __init__(self, command, dataset, experiments):
+        import SITE.site_net_train as site
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         outdir = os.getcwd() + '\\SITE\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
         print("Output Directory: ", outdir)
         os.makedirs(outdir)
         try:
 
-            site_modelqw.run(outdir,command)
+            site.run(outdir,command)
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
@@ -114,4 +117,4 @@ class SITE:
         config_file = outdir + 'config.txt'
         overwrite = False
         filters = None
-        # site_evaluate(config_file, overwrite, filters=filters)
+        ev.evaluate(config_file, overwrite, filters=filters)

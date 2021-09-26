@@ -229,7 +229,7 @@ class MyApp(QMainWindow):
         elif self.modelName == "Local similarity preserved individual treatment effect (SITE)":
             self.args = args.SITE()
         else:
-            print("Combobox Error occured")
+            print("No such model available in the combobox setting")
 
         self.updateWidget()
 
@@ -416,7 +416,7 @@ class MyApp(QMainWindow):
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Error")
-            msg.setInformativeText("Please check if the file has the correct format 'key value'")
+            msg.setInformativeText("Please check if the file has the correct format 'key=value'")
             msg.setWindowTitle("Error")
             msg.exec_()
 
@@ -452,7 +452,7 @@ class MyApp(QMainWindow):
 
     def delimitParamsDict(self, text):
         result = dict()
-        delimParamsList = [option.split() for option in text.split("\n")]
+        delimParamsList = [option.split("=") for option in text.split("\n")]
         for key, val in delimParamsList:
             key = key.lower()
             result[key] = val

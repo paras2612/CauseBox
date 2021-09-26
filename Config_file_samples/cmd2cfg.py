@@ -31,7 +31,7 @@ with open(outname, "w") as f:
     for key, value in zip(keys, values):
         if key == "dataset":
             continue
-        f.write(key+" "+value+"\n")
+        f.write(key+"="+value+"\n")
 
 print("File converted to cfg format 'key value'")
 # os.remove(inname)

@@ -19,7 +19,7 @@ class backgroundApp(QThread):
 
     @pyqtSlot()
     def run(self):
-        if self.modelName == "Counterfactual Regression Network (CFRNet)":
+        if self.modelName == "Counterfactual Regression Network (CRFNet)":
             CFRNet(self.command, self.dataset, self.experiments)
         # elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
         #     CEVAE(self.command, self.dataset, self.experiments)
@@ -34,7 +34,7 @@ class backgroundApp(QThread):
         elif self.modelName == "Local similarity preserved individual treatment effect (SITE)":
             SITE(self.command, self.dataset, self.experiments)
         else:
-            print("Combobox Error occured")
+            print("The application cannot support this model right now")
         self.finished.emit()
 
 class CFRNet:

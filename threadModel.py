@@ -11,7 +11,7 @@ from DRN.evaluate import evaluate as dr_cfr_evaluate
 # from CEVAE.evaluation import Evaluator as cevae_evaluate
 from SITE import site_net as site_model
 from SITE.evaluation import evaluate as site_evaluate
-
+# from SITE import site_net_train as site_model
 class backgroundApp(QThread):
     finished = pyqtSignal()
 
@@ -103,6 +103,7 @@ class SITE:
         print("Output Directory: ", outdir)
         os.makedirs(outdir)
         try:
+
             site_model.run(outdir,command)
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
@@ -112,4 +113,4 @@ class SITE:
         config_file = outdir + 'config.txt'
         overwrite = False
         filters = None
-        site_evaluate(config_file, overwrite, filters=filters)
+        # site_evaluate(config_file, overwrite, filters=filters)

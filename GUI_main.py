@@ -9,9 +9,7 @@ from GUI_tab import comparisonTab, hyperparamsTab
 import json
 import os
 import datetime
-
-
-# import sip
+import csv
 
 class WriteStream(object):
     def __init__(self, queue):
@@ -250,8 +248,6 @@ class MyApp(QMainWindow):
     def updateParamsWidget(self):
         if hasattr(self, 'ParamsBox'):
             self.mainLayout.removeWidget(self.ParamsBox)
-            # sip.delete(self.ParamsBox)
-            # self.ParamsBox = None
             self.ParamsBox = self.createParamsBox()
 
             self.mainLayout.addWidget(self.ParamsBox, 1, 0)
@@ -280,9 +276,39 @@ class MyApp(QMainWindow):
         self.start_thread()
 
     def updateResult(self):
-        filepath = "ask paras"
-        self.tab1.updateResultData(filepath)
+        try:
+            filename ="Results.csv"
+            rows = self.readResultCSV(filename)
+            formatter = "{0:.2f}"
+            #Would be better to change it to pandas dataframe and process
+            for row in rows:
+                modelName = row[0].upper().strip()
+                dataset = row[1].strip()
+                metric1 = float(row[3].strip()) # Policy Risk or PHEH
+                metric1 = formatter.format(metric1)
+                # metric2 = cells[9] # ATT
+            self.tab1.updateResultData(modelName, dataset, metric1)
+        except:
+            print("Couldn't find the result file")
         self.changeBtnStatus()
+
+    def readResultCSV(self, filename):
+        filepath = os.getcwd() + "\\" + filename
+        # filepath = filename
+        fields = []
+        rows = list()
+        with open(filepath, 'r') as csvfile:
+            # creating a csv reader object
+            csvreader = csv.reader(csvfile)
+
+            # extracting field names through first row
+            fields = next(csvreader)
+
+            # extracting each data row one by one
+            for row in csvreader:
+                rows.append(row)
+            # get total number of rows
+        return rows
 
     def updateStatus(self):
         self.changeBtnStatus()

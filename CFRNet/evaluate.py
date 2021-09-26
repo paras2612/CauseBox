@@ -83,14 +83,17 @@ def evaluate(config_file, overwrite=False, filters=None):
     res_dict['pehe'] = float(np.mean(np.abs(eval_results['test'].get("pehe"))))
     res_dict['pehe_nn'] = float(np.mean(np.abs(eval_results['test'].get("pehe_nn"))))
     res_dict['policy_risk'] = float(np.mean(np.abs(eval_results['test'].get("policy_risk"))))
-    try:
-        filename = os.getcwd() + "\Results.csv"
-        file1 = open(filename, 'a')
-        file1.write(str(res_dict))
-        file1.close()
 
-    except:
-        print("Unable to write to file")
+    # I comment it in to because I don't want to get dict format as csv
+    # try:
+    #     filename = os.getcwd() + "\Results.csv"
+    #     file1 = open(filename, 'a')
+    #     file1.write(str(res_dict))
+    #     file1.close()
+    #
+    # except:
+    #     print("Unable to write to file")
+    ###################################################
 
     fname = cfg["datadir"].strip() + cfg["data_test"].strip()
     if fname[-3:] == 'npz':
@@ -106,9 +109,8 @@ def evaluate(config_file, overwrite=False, filters=None):
         att = np.mean(data_in["ate"])
         error_att = np.abs(res["ATT_PRED"].values[0] - att)
         print("Policy Risk is ", round(res["POLICY_RISK"].values[0],2), "and error in ATT is ",round(error_att,2))
-    '''filename = os.getcwd() + "\Results.csv"
-
-    res.to_csv(filename,mode="a",header=False,index=False)'''
+    filename = os.getcwd() + "\Results.csv"
+    res.to_csv(filename,mode="a",header=False,index=False)
 
     # Sort by alpha
     #eval_results, configs = sort_by_config(eval_results, configs, 'p_alpha')

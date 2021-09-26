@@ -6,33 +6,35 @@ import os
 import json
 import csv
 
-table1 ={
-    "CFRNET":"1.67",
-    "SITE":"1.48",
-    "BART":"3.3",
-    "CForest":"3.6",
-    "DRNET":"1.2",
-    "CEVAE":"2.9",
-    "PM":"1.3"
-}
-table2 = {
-    "CFRNET":"0.19",
-    "SITE":"0.15",
-    "BART":"0.22",
-    "CForest":"0.20",
-    "DRNET":"0.18",
-    "CEVAE":"0.17",
-    "PM":"0.16"
+table1 = {
+    "CFRNET":"0.00",
+    "SITE":"0.00",
+    "BART":"0.00",
+    "CForest":"0.00",
+    "DRNET":"0.00",
+    "CEVAE":"0.00",
+    "PM":"0.00"
 
 }
+
+table2 ={
+    "CFRNET":"0.00",
+    "SITE":"0.00",
+    "BART":"0.00",
+    "CForest":"0.00",
+    "DRNET":"0.00",
+    "CEVAE":"0.00",
+    "PM":"0.00"
+}
 table3 ={
-    "CFRNET1":"1.75",
-    "CFRNET2":"1.67"
+    "CFRNET1":"0.00",
+    "CFRNET2":"0.00"
 }
 table4 ={
-    "CFRNET1":"0.14",
-    "CFRNET2":"0.08"
+    "CFRNET1":"0.00",
+    "CFRNET2":"0.00"
 }
+
 class FixFigureCanvas(FigureCanvas):
     def resizeEvent(self, event):
         if event.size().width() <= 0 or event.size().height() <= 0:
@@ -45,35 +47,20 @@ class comparisonTab(QTabBar):
         self.dataset = "Jobs"
         self.tabWindowGUI()
 
-    def updateResultData(self, filepath):
-        filepath = "Results_sample.csv"
-        try:
-            self.openCSV(filepath)
-        except:
-            print("Couldn't find the result file ", filepath)
-
-    def openCSV(self, filepath):
-        fields = []
-        rows = list()
-        with open(filepath, 'r') as csvfile:
-            # creating a csv reader object
-            csvreader = csv.reader(csvfile)
-
-            # extracting field names through first row
-            fields = next(csvreader)
-
-            # extracting each data row one by one
-            for row in csvreader:
-                rows.append(row)
-
-            # get total number of rows
-            print(rows)
-            print("Total no. of rows: %d"%(csvreader.line_num))
+    def updateResultData(self, modelName, dataset, metric):
+        print( modelName, dataset, metric)
+        if dataset == "Jobs":
+            table1[modelName] = metric
+        elif dataset == "IHDP":
+            table2[modelName] = metric
+        self.updatePlotBox()
+        self.updateTableBox()
 
     def tabWindowGUI(self):
         self.mainLayout = QGridLayout()
         self.dataComboBox = self.combobox()
         self.mainLayout.addWidget(self.dataComboBox, 0, 0)
+        #Please let image downloaded with a button!!!
         self.plotBox = self.plotbox()
         self.mainLayout.addWidget(self.plotBox, 1, 0)
         self.tableBox = self.tablebox()
@@ -81,25 +68,6 @@ class comparisonTab(QTabBar):
         # self.resultBox = self.resultbox()
         # self.mainLayout.addWidget(self.resultBox, 3, 0)
         self.setLayout(self.mainLayout)
-
-    def drawPlot1(self):
-        figure = plt.figure()
-        figure.clf()
-        figure.subplots_adjust(hspace=0.5)
-        figure.subplots_adjust(wspace=0.5)
-        canvas = FixFigureCanvas(figure)
-
-        ax = figure.add_subplot(111)
-        x = table1.keys()
-        y = [float(value) for value in table1.values()]
-        ax.bar(x, y, color=["red", "green", "blue", "black"])
-        # ax.set_title("IHDP Dataset")
-        ax.set_ylabel('PEHE')
-        ax.set_xlabel('Model')
-        plt.xticks(rotation=45)
-
-        canvas.draw_idle()
-        return canvas
 
     def drawPlot2(self):
         figure = plt.figure()
@@ -109,8 +77,27 @@ class comparisonTab(QTabBar):
         canvas = FixFigureCanvas(figure)
 
         ax = figure.add_subplot(111)
-        x = table2.keys()
+        x = table1.keys()
         y = [float(value) for value in table2.values()]
+        ax.bar(x, y, color=["red", "green", "blue", "black"])
+        # ax.set_title("IHDP Dataset")
+        ax.set_ylabel('PEHE')
+        ax.set_xlabel('Model')
+        plt.xticks(rotation=45)
+
+        canvas.draw_idle()
+        return canvas
+
+    def drawPlot1(self):
+        figure = plt.figure()
+        figure.clf()
+        figure.subplots_adjust(hspace=0.5)
+        figure.subplots_adjust(wspace=0.5)
+        canvas = FixFigureCanvas(figure)
+
+        ax = figure.add_subplot(111)
+        x = table2.keys()
+        y = [float(value) for value in table1.values()]
         ax.bar(x, y, color=["red", "green", "blue", "black"])
         # ax.set_title("Jobs Dataset")
         ax.set_ylabel('Policy Risk')
@@ -120,9 +107,9 @@ class comparisonTab(QTabBar):
         return canvas
 
     def plotbox(self):
-        if self.dataset == "IHDP":
+        if self.dataset == "Jobs":
             canvas = self.drawPlot1()
-        elif self.dataset == "Jobs":
+        elif self.dataset == "IHDP":
             canvas = self.drawPlot2()
         else:
             print("no such dataset available")
@@ -135,7 +122,7 @@ class comparisonTab(QTabBar):
         widget.setEditTriggers(QTableWidget.NoEditTriggers)
         widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         widget.setHorizontalHeaderLabels(
-            ['Model', 'PEHE']
+            ['Model', 'Policy Risk']
         )
         widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         i = j = 0
@@ -153,7 +140,7 @@ class comparisonTab(QTabBar):
         widget.setEditTriggers(QTableWidget.NoEditTriggers)
         widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         widget.setHorizontalHeaderLabels(
-            ['Model', 'Policy Risk']
+            ['Model', 'PEHE']
         )
         widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         i = j = 0
@@ -165,9 +152,9 @@ class comparisonTab(QTabBar):
         return widget
 
     def tablebox(self):
-        if self.dataset == "IHDP":
+        if self.dataset == "Jobs":
             self.tableBox = self.drawTable1()
-        elif self.dataset == "Jobs":
+        elif self.dataset == "IHDP":
             self.tableBox = self.drawTable2()
         else:
             print("no such dataset available")

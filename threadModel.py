@@ -9,7 +9,7 @@ from DRN import dr_cfr as dr_cfr_model
 from DRN.evaluate import evaluate as dr_cfr_evaluate
 # from CEVAE import cevae as cevae_model
 # from CEVAE.evaluation import Evaluator as cevae_evaluate
-from SITE import site_net as site_model
+from SITE import site_net_train as site_modelqw
 from SITE.evaluation import evaluate as site_evaluate
 # from SITE import site_net_train as site_model
 class backgroundApp(QThread):
@@ -104,11 +104,12 @@ class SITE:
         os.makedirs(outdir)
         try:
 
-            site_model.run(outdir,command)
+            site_modelqw.run(outdir,command)
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:
                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
             print("Some problem occured")
+            print(e)
 
         config_file = outdir + 'config.txt'
         overwrite = False

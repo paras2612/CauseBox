@@ -42,7 +42,7 @@ def evaluate(config_file, overwrite=False, filters=None):
 
     cfg = load_config(config_file)
     output_dir = cfg['outdir'].strip()
-    #print(output_dir)
+    print(output_dir)
 
     if not os.path.isdir(output_dir):
         raise Exception('Could not find output at path: %s' % output_dir)
@@ -74,19 +74,58 @@ def evaluate(config_file, overwrite=False, filters=None):
     res_dict = {}
     res_dict["model"] = "CFRNET"
     res_dict['dataset'] = cfg['dataset']
-    res_dict['rmse_ite'] = float(np.mean(np.abs(eval_results['test'].get("rmse_ite"))))
-    res_dict['ate_pred'] = float(np.mean(np.abs(eval_results['test'].get("ate_pred"))))
-    res_dict['att_pred'] = float(np.mean(np.abs(eval_results['test'].get("att_pred"))))
-    res_dict['bias_att'] = float(np.mean(np.abs(eval_results['test'].get("bias_att"))))
-    res_dict['atc_pred'] = float(np.mean(np.abs(eval_results['test'].get("atc_pred"))))
-    res_dict['bias_atc'] = float(np.mean(np.abs(eval_results['test'].get("bias_atc"))))
-    res_dict['bias_ate'] = float(np.mean(np.abs(eval_results['test'].get("bias_ate"))))
-    res_dict['rmse_fact'] = float(np.mean(np.abs(eval_results['test'].get("rmse_fact"))))
-    res_dict['policy_value'] = float(np.mean(np.abs(eval_results['test'].get("policy_value"))))
-    res_dict['policy_curve'] = float(np.mean(np.abs(eval_results['test'].get("policy_curve"))))
-    res_dict['pehe'] = float(np.mean(np.abs(eval_results['test'].get("pehe"))))
-    res_dict['pehe_nn'] = float(np.mean(np.abs(eval_results['test'].get("pehe_nn"))))
-    res_dict['policy_risk'] = float(np.mean(np.abs(eval_results['test'].get("policy_risk"))))
+    try:
+        res_dict['rmse_ite'] = float(np.mean(np.abs(eval_results['test'].get("rmse_ite"))))
+    except:
+        res_dict['rmse_ite'] = float(0)
+    try:
+        res_dict['ate_pred'] = float(np.mean(np.abs(eval_results['test'].get("ate_pred"))))
+    except:
+        res_dict['ate_pred'] = float(0)
+    try:
+        res_dict['att_pred'] = float(np.mean(np.abs(eval_results['test'].get("att_pred"))))
+    except:
+        res_dict['att_pred'] = float(0)
+    try:
+        res_dict['bias_att'] = float(np.mean(np.abs(eval_results['test'].get("bias_att"))))
+    except:
+        res_dict['bias_att'] = float(0)
+    try:
+        res_dict['atc_pred'] = float(np.mean(np.abs(eval_results['test'].get("atc_pred"))))
+    except:
+        res_dict['atc_pred'] = float(0)
+    try:
+        res_dict['bias_ate'] = float(np.mean(np.abs(eval_results['test'].get("bias_ate"))))
+    except:
+        res_dict['bias_ate'] = float(0)
+    try:
+        res_dict['bias_atc'] = float(np.mean(np.abs(eval_results['test'].get("bias_atc"))))
+    except:
+        res_dict['bias_atc'] = float(0)
+    try:
+        res_dict['rmse_fact'] = float(np.mean(np.abs(eval_results['test'].get("rmse_fact"))))
+    except:
+        res_dict['rmse_fact'] = float(0)
+    try:
+        res_dict['policy_value'] = float(np.mean(np.abs(eval_results['test'].get("policy_value"))))
+    except:
+        res_dict['policy_value'] = float(0)
+    try:
+        res_dict['policy_curve'] = float(np.mean(np.abs(eval_results['test'].get("policy_curve"))))
+    except:
+        res_dict['policy_curve'] = float(0)
+    try:
+        res_dict['pehe'] = float(np.mean(np.abs(eval_results['test'].get("pehe"))))
+    except:
+        res_dict['pehe'] = float(0)
+    try:
+        res_dict['pehe_nn'] = float(np.mean(np.abs(eval_results['test'].get("pehe_nn"))))
+    except:
+        res_dict['pehe_nn'] = float(0)
+    try:
+        res_dict['policy_risk'] = float(np.mean(np.abs(eval_results['test'].get("policy_risk"))))
+    except:
+        res_dict['policy_risk'] = float(0)
     '''
     try:
         filename = os.getcwd() + "\Results.csv"

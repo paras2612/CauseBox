@@ -1,3 +1,5 @@
 pyro-ppl
 torch
 torchvision
+tensorflow
+pyqt5

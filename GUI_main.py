@@ -191,7 +191,7 @@ class MyApp(QMainWindow):
         widget = QGroupBox("Settings")
 
         modelComboBox = QComboBox()
-        modelComboBox.addItem("Counterfactual Regression Network (CRFNet)")
+        modelComboBox.addItem("Counterfactual Regression Network (CFRNet)")
         modelComboBox.addItem("Causal Effect Inference with Deep Latent-Variable Models (CEVAE)")
         modelComboBox.addItem("Bayesian Additive Regression Trees (BART)")
         modelComboBox.addItem("Causal Forests")
@@ -214,7 +214,7 @@ class MyApp(QMainWindow):
 
     def modelChoice(self, text):
         self.modelName = text
-        if self.modelName == "Counterfactual Regression Network (CRFNet)":
+        if self.modelName == "Counterfactual Regression Network (CFRNet)":
             self.args = args.CFRNet()
         elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
             self.args = args.CEVAE()
@@ -284,10 +284,14 @@ class MyApp(QMainWindow):
             for row in rows:
                 modelName = row[0].upper().strip()
                 dataset = row[1].strip()
-                metric1 = float(row[3].strip()) # Policy Risk or PHEH
-                metric1 = formatter.format(metric1)
-                # metric2 = cells[9] # ATT
-            self.tab1.updateResultData(modelName, dataset, metric1)
+                if dataset == "Jobs":
+                    metric = float(row[-1].strip())#Policy Risk
+                elif dataset == "IHDP":
+                    metric = float(row[-3].strip())#PEHE
+                else:
+                    print("no such metric exist in the result file")
+                metric = formatter.format(metric)
+            self.tab1.updateResultData(modelName, dataset, metric)
         except:
             print("Couldn't find the result file")
         self.changeBtnStatus()
@@ -473,10 +477,10 @@ class MyApp(QMainWindow):
         widget = QTabWidget()
 
         self.tab1 = comparisonTab()
-        # self.tab2 = hyperparamsTab()
+        self.tab2 = hyperparamsTab()
 
-        widget.addTab(self.tab1, "Comparison")
-        # widget.addTab(self.tab2, "Hyperparameter Sesarch")
+        widget.addTab(self.tab1, "Model Comparisons")
+        widget.addTab(self.tab2, "Hyperparameter Search")
         return widget
 
     def setCenter(self):

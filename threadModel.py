@@ -19,7 +19,7 @@ class backgroundApp(QThread):
 
     @pyqtSlot()
     def run(self):
-        if self.modelName == "Counterfactual Regression Network (CRFNet)":
+        if self.modelName == "Counterfactual Regression Network (CFRNet)":
             CFRNet(self.command, self.dataset, self.experiments)
         # elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
         #     CEVAE(self.command, self.dataset, self.experiments)
@@ -42,7 +42,7 @@ class CFRNet:
         from CFRNet import cfr_net_main as cfr_model
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
-        print("Output Directory: ", config_dir)
+        # print("Output Directory: ", config_dir)
         os.makedirs(config_dir)
         try:
             cfr_model.run(config_dir,command)

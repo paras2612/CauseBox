@@ -64,8 +64,10 @@ def main(_):
         ev.evaluate(config_file, overwrite, filters=filters)
 
     elif argv[1].lower() == "bart":
+        print(sys.argv)
+        rpath  = os.getcwd()+sys.argv[2]
         process = subprocess.call(
-            ["Rscript", sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]])
+            ["Rscript", rpath, os.getcwd()+sys.argv[3], os.getcwd()+sys.argv[4], os.getcwd()+sys.argv[5], sys.argv[6], sys.argv[7]])
         if (process == 0):
             print("Check the results in csv file")
         else:

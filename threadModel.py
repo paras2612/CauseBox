@@ -6,6 +6,7 @@ import sys
 from CFRNet.evaluate import evaluate as cfr_evaluate
 from SITE import evaluate as ev
 from DRN import evaluate as dev
+import subprocess
 
 class backgroundApp(QThread):
     finished = pyqtSignal()
@@ -16,7 +17,7 @@ class backgroundApp(QThread):
         self.dataset = dataset
         self.modelName = modelName
         self.experiments = experiments
-
+        print(self.command, self.dataset, self.modelName, self.experiments)
     @pyqtSlot()
     def run(self):
         if self.modelName == "Counterfactual Regression Network (CFRNet)":
@@ -42,7 +43,7 @@ class CFRNet:
         from CFRNet import cfr_net_main as cfr_model
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
-        # print("Output Directory: ", config_dir)
+        print("Output Directory: ", config_dir)
         os.makedirs(config_dir)
         try:
             cfr_model.run(config_dir,command)
@@ -128,26 +129,18 @@ class SITE:
 #         filters = None
 #         cfr_evaluate(config_file, overwrite, filters=filters)
 
-# class BART:
-#     def __init__(self, command, dataset, experiments):
-#         import PM.main as pm
-#         from PM.parameters import clip_percentage, parse_parameters
-#         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
-#         config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
-#         print("Output Directory: ", config_dir)
-#         os.makedirs(config_dir)
-#         try:
-#         process = subprocess.call(
-#             ["Rscript", sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]])#         except Exception as e:
-#             with open(config_dir + 'error.txt', 'w') as errfile:
-#                 errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
-#
-#         config_file = config_dir + 'config.txt'
-#         overwrite = False
-#         filters = None
-#         cfr_evaluate(config_file, overwrite, filters=filters)
-
-
+class BART:
+    def __init__(self, command, dataset, experiments):
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
+        config_dir = os.getcwd() + '\\CFRNet\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
+        print("Output Directory: ", config_dir)
+        os.makedirs(config_dir)
+        # Result = 5?
+        try:
+            process = subprocess.call(["Rscript", sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]])
+        except Exception as e:
+            with open(config_dir + 'error.txt', 'w') as errfile:
+                errfile.write(''.join(traceback.format_exception(*sys.exc_info())))
 # class CausalForests:
 #     def __init__(self, command, dataset, experiments):
 #         import PM.main as pm

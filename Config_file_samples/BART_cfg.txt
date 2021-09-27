@@ -1,3 +1,5 @@
-C:\\Users\\coole\\PycharmProjects\\RScripts\\BART_Program.R D:\\PycharmProjects\\pythonProject\\CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.train.npz\\ihdp_npci_1-1000.train.npz
-D:\\PycharmProjects\\pythonProject\\CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.test.npz\\ihdp_npci_1-1000.test.npz D:\\PycharmProjects\\pythonProject\\Results.csv
-IHDP 10
+arg1=CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.train.npz\\ihdp_npci_1-1000.train.npz
+arg2=CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.test.npz\\ihdp_npci_1-1000.test.npz
+arg3=Results.csv
+arg4=IHDP
+arg5=10

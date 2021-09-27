@@ -200,14 +200,14 @@ class MyApp(QMainWindow):
         modelComboBox.addItem("Local similarity preserved individual treatment effect (SITE)")
         modelComboBox.activated[str].connect(self.modelChoice)
 
-        dataComboBox = QComboBox()
-        dataComboBox.addItem("Jobs")
-        dataComboBox.addItem("IHDP")
-        dataComboBox.activated[str].connect(self.dataChoice)
+        # dataComboBox = QComboBox()
+        # dataComboBox.addItem("Jobs")
+        # dataComboBox.addItem("IHDP")
+        # dataComboBox.activated[str].connect(self.dataChoice)
 
         self.SettingLayout = QVBoxLayout()
         self.SettingLayout.addWidget(modelComboBox)
-        self.SettingLayout.addWidget(dataComboBox)
+        # self.SettingLayout.addWidget(dataComboBox)
 
         widget.setLayout(self.SettingLayout)
         return widget
@@ -354,8 +354,9 @@ class MyApp(QMainWindow):
             option = "--{key} {val}".format(key=key, val=val)
             options.append(option)
 
-        self.command = self.command + " ".join(options) + " --dataset %s" % (self.dataset)
+        self.command = self.command + " ".join(options)
         self.experiments = submitParams["experiments"]
+        self.dataset = submitParams["dataset"]
         print("*****************************************COMMAND RECEIVED*******************************************")
         print(self.command)
         print("********************************************START RUNNING********************************************")

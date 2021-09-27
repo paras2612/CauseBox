@@ -11,7 +11,8 @@ class CFRNet:
                 "dataform",
                 "data_test",
                 "imb_fun",
-                "output_csv"]
+                "output_csv",
+                "dataset"]
     optional = ["n_in",
                 "n_out",
                 "rep_weight_decay",
@@ -63,7 +64,8 @@ class CEVAE:
                 "hidden-dim",
                 "batch-size",
                 "z-dim",
-                "hidden-layers"]
+                "hidden-layers",
+                "dataset"]
 
     optional = []
 
@@ -72,6 +74,7 @@ class BART:
                 "Train_data_path",
                 "Test_data_path",
                 "Out_data_path",
+                "dataset",
                 "Experiments"]
     optional = []
 
@@ -81,6 +84,7 @@ class CausalForests:
                 "Train_data_path",
                 "Test_data_path",
                 "Out_data_path",
+                "dataset",
                 "Experiments"]
     optional = []
 
@@ -128,6 +132,7 @@ class PerfectMatch:
                 "Early_stopping_on_pehe",
                 "With_pehe_loss",
                 "Match_on_covariates",
+                "dataset",
                 "Save_predictions"]
     optional = []
 
@@ -145,6 +150,7 @@ class DRNet:
                 "Dataform",
                 "Data_test",
                 "output_csv",
+                "dataset",
                 "imb_fun"]
 
     optional = ["N_in",
@@ -193,6 +199,7 @@ class SITE:
                 "Datadir",
                 "Dataform",
                 "Data_test",
+                "dataset",
                 "output_csv"]
 
     optional = ["N_in",

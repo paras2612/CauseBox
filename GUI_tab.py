@@ -192,7 +192,7 @@ class comparisonTab(QTabBar):
 class hyperparamsTab(QTabBar):
     def __init__(self):
         super().__init__()
-        self.config_path = "CFRNET\\config.txt"
+        self.config_path = "CFRNet\\config.txt"
         self.hyper_dicts = self.createOptions()
         self.num_models = len(self.hyper_dicts)
         self.table1 = dict()

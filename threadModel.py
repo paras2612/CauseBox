@@ -96,10 +96,9 @@ class SITE:
         import SITE.site_net_train as site
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S-%f")
         outdir = os.getcwd() + '\\SITE\\Results\\'+dataset.lower().strip()+str(experiments)+'\\results_' + timestamp + '\\'
-        print("Output Directory: ", outdir)
+        # print("Output Directory: ", outdir)
         os.makedirs(outdir)
         try:
-
             site.run(outdir,command)
         except Exception as e:
             with open(outdir + 'error.txt', 'w') as errfile:

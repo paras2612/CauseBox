@@ -50,12 +50,19 @@ class MyApp(QMainWindow):
         exitApp.setStatusTip('leave the app')
         exitApp.triggered.connect(self.close_application)
 
-        openFile = QAction('&Open File', self)
-        openFile.setShortcut('Ctrl+O')
-        openFile.setStatusTip('Open File')
-        openFile.triggered.connect(self.file_open)
+        openConfig1 = QAction('&Open Custom Param Config', self)
+        openConfig1.setShortcut('Ctrl+1')
+        openConfig1.setStatusTip('Open Config For Customized Parameter')
+        openConfig1.triggered.connect(self.file_open1)
+
+        openConfig2 = QAction('&Open Param Search Config', self)
+        openConfig2.setShortcut('Ctrl+2')
+        openConfig2.setStatusTip('Open Config For Hyperparameter Search')
+        openConfig2.triggered.connect(self.file_open2)
+
         fileMenu = self.menuBar().addMenu('&File')
-        fileMenu.addAction(openFile)
+        fileMenu.addAction(openConfig1)
+        fileMenu.addAction(openConfig2)
         fileMenu.addAction(exitApp)
 
         self.SettingsBox = self.createSettingsBox()
@@ -284,9 +291,9 @@ class MyApp(QMainWindow):
             for row in rows:
                 modelName = row[0].upper().strip()
                 dataset = row[1].strip()
-                if dataset == "Jobs":
+                if dataset.lower() == "jobs":
                     metric = float(row[-1].strip())#Policy Risk
-                elif dataset == "IHDP":
+                elif dataset.lower() == "ihdp":
                     metric = float(row[-3].strip())#PEHE
                 else:
                     print("no such metric exist in the result file")
@@ -405,7 +412,7 @@ class MyApp(QMainWindow):
             self.detailsButton.setText("More...")
             self.OptionalParamsBox.hide()
 
-    def file_open(self):
+    def file_open1(self):
         name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
         if name == "":
             return 0
@@ -425,6 +432,11 @@ class MyApp(QMainWindow):
             msg.setWindowTitle("Error")
             msg.exec_()
 
+    def file_open2(self):
+        name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
+        if name == "":
+            return 0
+        self.tab2.setConfigLocation(name)
     def file_validation(self, text):
         self.newParamDict = self.delimitParamsDict(text)
         newParamSet = set([param.lower() for param in self.newParamDict.keys()])

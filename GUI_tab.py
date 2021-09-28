@@ -62,6 +62,7 @@ class comparisonTab(QTabBar):
         ax = figure.add_subplot(111)
         x = self.table1.keys()
         y = [float(value) for value in self.table2.values()]
+
         ax.bar(x, y, color=["red", "green", "blue", "black"])
         # ax.set_title("IHDP Dataset")
         ax.set_ylabel('PEHE')
@@ -111,6 +112,7 @@ class comparisonTab(QTabBar):
         i = j = 0
         for key, value in self.table1.items():
             widget.setItem(i, j, QTableWidgetItem(str(key)))
+            #FUTURE: Change value 0.00 with N/A using filter(lambda x: x % 2 != 0, seq)
             widget.setItem(i, j + 1, QTableWidgetItem(str(value)))
             i += 1
             j = 0
@@ -192,12 +194,19 @@ class comparisonTab(QTabBar):
 class hyperparamsTab(QTabBar):
     def __init__(self):
         super().__init__()
-        self.config_path = "CFRNet\\config.txt"
-        self.hyper_dicts = self.createOptions()
+        self.config_path = ""
+        self.hyper_dicts = dict()
         self.num_models = len(self.hyper_dicts)
         self.table1 = dict()
         self.table2 = dict()
+        self.dataset = "Jobs"
+        self.modelName = "Counterfactual Regression Network (CFRNet)"
         self.tabWindowGUI()
+
+    def setConfigLocation(self, filename):
+        self.config_path = filename
+        self.hyper_dicts = self.createOptions()
+        self.updateTableBox()
 
     def tabWindowGUI(self):
         self.mainLayout = QGridLayout()
@@ -212,6 +221,7 @@ class hyperparamsTab(QTabBar):
 
     def loadParamserchConfig(self):
         result = dict()
+
         with open(self.config_path, "r") as f:
             text = "".join(f.readlines())
             delimParamsList = [option.split("=") for option in text.split("\n")]
@@ -231,15 +241,15 @@ class hyperparamsTab(QTabBar):
         options = list()
         combinations = list(itertools.product(variation1, variation2))
         for combination in combinations:
-            option = hyperParams
+            option = hyperParams.copy()
             option["p_alpha"] = combination[0]
             option["p_lambda"] = combination[1]
             options.append(option)
         return options
 
     def createOptions(self):
-        hyperParams = self.loadParamserchConfig()
-        result = self.unfoldHyperparmSearch(hyperParams)
+        configParams = self.loadParamserchConfig()
+        result = self.unfoldHyperparmSearch(configParams)
         return result
 
     def createCommand(self, hyper_dict):
@@ -272,40 +282,58 @@ class hyperparamsTab(QTabBar):
         self.mainLayout.addWidget(self.tableBox, 2, 0)
         self.setLayout(self.mainLayout)
 
-    def plotbox(self):
+    def drawPlot1(self):
         figure = plt.figure()
         figure.clf()
         figure.subplots_adjust(hspace=0.5)
         figure.subplots_adjust(wspace=0.5)
         canvas = FixFigureCanvas(figure)
-        # if len(self.table1) > 0:
-        #     ax1 = figure.add_subplot(121)
-        #     x1 = list(self.table1.keys())
-        #     y1 = [float(value) for value in self.table1.values()]
-        #     ax1.bar(x1, y1, color='rgbc')
-        #     ax1.set_title("IHDP Dataset")
-        #     ax1.set_ylabel('PEHE')
-        #     ax1.set_xlabel('Model')
-        #     plt.xticks(rotation=45)
+        ax1 = figure.add_subplot(111)
+        x1 = list(self.table1.keys())
+        y1 = [float(value) for value in self.table1.values()]
+        ax1.bar(x1, y1)#, color='rgbc')
+        ax1.set_ylabel('Policy Risk')
+        ax1.set_xlabel('Run Names')
+        plt.xticks(rotation=45)
+        return canvas
+
+    def drawPlot2(self):
+        figure = plt.figure()
+        figure.clf()
+        figure.subplots_adjust(hspace=0.5)
+        figure.subplots_adjust(wspace=0.5)
+        canvas = FixFigureCanvas(figure)
+
         ax2 = figure.add_subplot(111)
         x2 = list(self.table2.keys())
         y2 = [float(value) for value in self.table2.values()]
         ax2.bar(x2, y2)#, color='rgbc')
-        ax2.set_title("Jobs Dataset")
-        ax2.set_ylabel('Policy Risk')
-        ax2.set_xlabel('Model')
+        # ax2.set_title("Jobs Dataset")
+        ax2.set_ylabel('PEHE')
+        ax2.set_xlabel('Run Names')
         plt.xticks(rotation=45)
 
         canvas.draw_idle()
         return canvas
 
+    def plotbox(self):
+        if self.dataset.lower() == "jobs":
+            canvas = self.drawPlot1()
+        elif self.dataset.lower() == "ihdp":
+            canvas = self.drawPlot2()
+        return canvas
+
     def tablebox(self):
+        if self.hyper_dicts == {}:
+            widget = QTableWidget(0,0)
+            return widget
+
         headers = list(self.hyper_dicts[0].keys())
         headers.insert(0, "Click")
         numrow = len(self.hyper_dicts)
         numcol = len(headers)
-
         widget = QTableWidget(numrow, numcol)
+
         widget.setHorizontalHeaderLabels(
             headers
         )
@@ -396,16 +424,19 @@ class hyperparamsTab(QTabBar):
         self.dataComboBox = QComboBox()
         self.dataComboBox.addItem("Jobs")
         self.dataComboBox.addItem("IHDP")
-        # self.dataComboBox.activated[str].connect(self.dataChoice)
+        self.dataComboBox.activated[str].connect(self.dataChoice)
         layout.addWidget((self.dataComboBox))
         widget.setLayout(layout)
         return widget
 
     def modelChoice(self, text):
-        self.dataset = text
+        self.modelName = text
         self.updatePlotBox()
         self.updateTableBox()
 
+    def dataChoice(self, text):
+        self.dataset = text
+        self.updatePlotBox()
 
     def updatePlotBox(self):
         if hasattr(self, 'plotBox'):
@@ -417,6 +448,6 @@ class hyperparamsTab(QTabBar):
     def updateTableBox(self):
         if hasattr(self, 'tableBox'):
             self.mainLayout.removeWidget(self.tableBox)
-            self.plotBox = self.tablebox()
+            self.tableBox = self.tablebox()
             self.mainLayout.addWidget(self.tableBox, 2, 0)
             self.mainLayout.update()

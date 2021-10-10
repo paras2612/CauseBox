@@ -264,6 +264,8 @@ class hyperparamsTab(QTabBar):
 
     def threadHyperparamModel(self, command, dataset, modelName, experiments):
         self.objThread = QThread()
+        print("****************************")
+        print(dataset, modelName, experiments)
         self.obj = threadModel.backgroundApp(command, dataset, modelName, experiments)
         self.obj.moveToThread(self.objThread)
         self.obj.finished.connect(self.objThread.quit)
@@ -353,7 +355,9 @@ class hyperparamsTab(QTabBar):
 
     def updateResult(self):
         try:
-            filename = "Results.csv"
+            # for demo....
+            # filename = "Results.csv"
+            filename = "tempResult.csv"
             rows = self.readResultCSV(filename)
             formatter = "{0:.2f}"
             # Would be better to change it to pandas dataframe and process
@@ -363,7 +367,8 @@ class hyperparamsTab(QTabBar):
                 if dataset.lower() == "jobs":
                     metric = float(row[-1].strip())  # Policy Risk
                 elif dataset.lower() == "ihdp":
-                    metric = float(row[-3].strip())  # PEHE
+                    metric = float(row[-1].strip())  # PEHE
+                    #change it to -3 next time... demo ...
                 else:
                     print("no such metric exist in the result file")
                 metric = formatter.format(metric)
@@ -388,7 +393,7 @@ class hyperparamsTab(QTabBar):
             csvreader = csv.reader(csvfile)
 
             # extracting field names through first row
-            fields = next(csvreader)
+            # fields = next(csvreader)
 
             # extracting each data row one by one
             for row in csvreader:

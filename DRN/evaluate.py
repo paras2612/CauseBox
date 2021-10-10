@@ -42,7 +42,6 @@ def evaluate(config_file, overwrite=False, filters=None):
 
     cfg = load_config(config_file)
     output_dir = cfg['outdir'].strip()
-    print(output_dir)
 
     if not os.path.isdir(output_dir):
         raise Exception('Could not find output at path: %s' % output_dir)
@@ -72,12 +71,9 @@ def evaluate(config_file, overwrite=False, filters=None):
         eval_results, configs = pickle.load(open(eval_path, "rb"))
     '''
     res_dict = {}
-    res_dict["model"] = "CFRNET"
+    res_dict["model"] = "DRNet"
     res_dict['dataset'] = cfg['dataset']
-    try:
-        res_dict['rmse_ite'] = float(np.mean(np.abs(eval_results['test'].get("rmse_ite"))))
-    except:
-        res_dict['rmse_ite'] = float(0)
+    res_dict['rmse_ite'] = float(np.mean(np.abs(eval_results['test'].get("rmse_ite"))))
     try:
         res_dict['ate_pred'] = float(np.mean(np.abs(eval_results['test'].get("ate_pred"))))
     except:
@@ -136,9 +132,11 @@ def evaluate(config_file, overwrite=False, filters=None):
     except:
         print("Unable to write to file")
     '''
+    '''
     res = pd.DataFrame.from_dict([res_dict])
     res.columns = ["MODEL", "DATASET", "RMSE_ITE", "ATE_PRED", "ATT_PRED", "BIAS_ATT", "ATC_PRED", "BIAS_ATC",
                    "BIAS_ATE", "RMSE_FACT", "POLICY_CURVE", "POLICY_VALUE", "PEHE", "PEHE_NN", "POLICY_RISK"]
+    '''
     '''
     filename = os.getcwd() + "\Results.csv"
 
@@ -159,6 +157,10 @@ def evaluate(config_file, overwrite=False, filters=None):
         att = np.mean(data_in["ate"])
         error_att = np.abs(res["ATT_PRED"].values[0] - att)
         print("Policy Risk is ", round(res["POLICY_RISK"].values[0], 2), "and error in ATT is ", round(error_att, 2))
+    filename = os.getcwd() + "\Results.csv"
+    res.to_csv(filename, mode="a", header=False, index=False)
+    print(filename)
+    print("Results stored")
     # Sort by alpha
     # eval_results, configs = sort_by_config(eval_results, configs, 'p_alpha')
 

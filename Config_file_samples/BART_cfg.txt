@@ -1,5 +1,6 @@
-arg1=CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.train.npz\\ihdp_npci_1-1000.train.npz
-arg2=CFRNet\\Dataset\\IHDP\\ihdp_npci_1-1000.test.npz\\ihdp_npci_1-1000.test.npz
-arg3=Results.csv
-arg4=IHDP
-arg5=10
+Rscript_Path=\RScripts\BART_Program.R
+Train_data_path=\CFRNet\Dataset\IHDP\ihdp_npci_1-1000.train.npz\ihdp_npci_1-1000.train.npz
+Test_data_path=\CFRNet\Dataset\IHDP\ihdp_npci_1-1000.test.npz\ihdp_npci_1-1000.test.npz
+Out_data_path=\Results.csv
+dataset=IHDP
+Experiments=10

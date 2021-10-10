@@ -11,6 +11,7 @@ import os
 import datetime
 import csv
 
+
 class WriteStream(object):
     def __init__(self, queue):
         self.queue = queue
@@ -41,7 +42,9 @@ class MyApp(QMainWindow):
         super().__init__()
         self.args = args.CFRNet()
         self.dataset = "Jobs"
+        self.p = None  # Default empty value.
         self.modelName = "Counterfactual Regression Network (CFRNet)"
+        self.modelAlias = "cfrnet"
         self.MainWindowGUI()
 
     def MainWindowGUI(self):
@@ -223,18 +226,26 @@ class MyApp(QMainWindow):
         self.modelName = text
         if self.modelName == "Counterfactual Regression Network (CFRNet)":
             self.args = args.CFRNet()
+            self.modelAlias = "cfrnet"
         elif self.modelName == "Causal Effect Inference with Deep Latent-Variable Models (CEVAE)":
             self.args = args.CEVAE()
+            self.modelAlias = "cevae"
         elif self.modelName == "Bayesian Additive Regression Trees (BART)":
             self.args = args.BART()
+            self.modelAlias = "bart"
         elif self.modelName == "Causal Forests":
             self.args = args.CausalForests()
+            self.modelAlias = "cforest"
+
         elif self.modelName == "Perfect Match":
             self.args = args.PerfectMatch()
+
         elif self.modelName == "Learning Disentangled Representations for counterfactual regression (DRNet)":
             self.args = args.DRNet()
+            self.modelAlias = "drnet"
         elif self.modelName == "Local similarity preserved individual treatment effect (SITE)":
             self.args = args.SITE()
+            self.modelAlias = "site"
         else:
             print("No such model available in the combobox setting")
 
@@ -280,21 +291,22 @@ class MyApp(QMainWindow):
     def runModel(self):
         self.changeBtnStatus()
         self.createCommand()
-        self.start_thread()
+        # self.start_thread()
+        self.start_process()
 
     def updateResult(self):
         try:
-            filename ="Results.csv"
+            filename = "Results.csv"
             rows = self.readResultCSV(filename)
             formatter = "{0:.2f}"
-            #Would be better to change it to pandas dataframe and process
+            # Would be better to change it to pandas dataframe and process
             for row in rows:
                 modelName = row[0].upper().strip()
                 dataset = row[1].strip()
                 if dataset.lower() == "jobs":
-                    metric = float(row[-1].strip())#Policy Risk
+                    metric = float(row[-1].strip())  # Policy Risk
                 elif dataset.lower() == "ihdp":
-                    metric = float(row[-3].strip())#PEHE
+                    metric = float(row[-3].strip())  # PEHE
                 else:
                     print("no such metric exist in the result file")
                 metric = formatter.format(metric)
@@ -351,7 +363,7 @@ class MyApp(QMainWindow):
             key = label.text().lower()
             val = line.text()
             submitParams[key] = val
-        self.command = "python main.py "
+        temp_dataset = submitParams.pop("dataset")
         options = list()
         for key, val in submitParams.items():
             # skip the parameter if the value  is empty
@@ -361,7 +373,13 @@ class MyApp(QMainWindow):
             option = "--{key} {val}".format(key=key, val=val)
             options.append(option)
 
-        self.command = self.command + " ".join(options)
+        # True if CFRNET, DRNET, SITE, CEVAE, BART, Causual Forest
+        if True:
+            baseCmd = "python main.py" + " " + self.modelAlias
+        # else:
+        #     pass
+        self.command = baseCmd + " " + " ".join(options) + " --dataset " + temp_dataset
+        submitParams["dataset"] = temp_dataset
         self.experiments = submitParams["experiments"]
         self.dataset = submitParams["dataset"]
         print("*****************************************COMMAND RECEIVED*******************************************")
@@ -372,6 +390,14 @@ class MyApp(QMainWindow):
     def append_text(self, text):
         self.textedit.moveCursor(QTextCursor.End)
         self.textedit.insertPlainText(text)
+
+    def start_process(self):
+        self.p = QProcess()
+        self.p.readyReadStandardOutput.connect(self.handle_stdout)
+        # self.p.readyReadStandardError.connect(self.handle_stderr)
+        # self.p.stateChanged.connect(self.handle_state)
+        self.p.finished.connect(self.changeBtnStatus)  # Clean up once complete.
+        self.p.start(self.command)
 
     @pyqtSlot()
     def start_thread(self):
@@ -437,6 +463,7 @@ class MyApp(QMainWindow):
         if name == "":
             return 0
         self.tab2.setConfigLocation(name)
+
     def file_validation(self, text):
         self.newParamDict = self.delimitParamsDict(text)
         newParamSet = set([param.lower() for param in self.newParamDict.keys()])
@@ -501,6 +528,11 @@ class MyApp(QMainWindow):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+    def handle_stdout(self):
+        data = self.p.readAllStandardOutput()
+        stdout = bytes(data).decode("utf8")
+        print(stdout)
 
 
 if __name__ == '__main__':

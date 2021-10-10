@@ -1,7 +1,0 @@
-Training with hyperparameters: p_pddm=0.32, r_mid_point_mini=0.32
-Training data: D:/PycharmProjects/pythonProject/CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.train.npz
-Test data:     D:/PycharmProjects/pythonProject/CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.test.npz
-Loaded data with shape [2570,17]
-Defining graph...
-
-Training on experiment 1/10...

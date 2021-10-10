@@ -26,7 +26,8 @@ logging.getLogger('tensorflow').setLevel(logging.FATAL)
 FLAGS = tf.compat.v1.app.flags.FLAGS
 tf.compat.v1.app.flags.DEFINE_string('loss', 'l2', """Which loss function to use (l1/l2/log)""")
 tf.compat.v1.app.flags.DEFINE_integer('n_in', 2, """Number of representation layers. """)
-tf.compat.v1.app.flags.DEFINE_integer('n_out', 2, """Number of regression layers. """)
+tf.compat.v1.app.flags.DEFINE_integer('n_out', 2, """Number of r
+egression layers. """)
 tf.compat.v1.app.flags.DEFINE_float('p_alpha', 1e-4, """Imbalance regularization param. """)
 tf.compat.v1.app.flags.DEFINE_float('p_lambda', 0.0, """Weight decay regularization parameter. """)
 tf.compat.v1.app.flags.DEFINE_integer('rep_weight_decay', 1,

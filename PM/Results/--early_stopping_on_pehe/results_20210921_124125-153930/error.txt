@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "main.py", line 110, in main
+    app.run()
+  File "D:\PycharmProjects\pythonProject\PM\evaluate.py", line 131, in run
+    return self.run_single()
+  File "D:\PycharmProjects\pythonProject\PM\evaluate.py", line 157, in run_single
+    model = self.train_model(train_generator,
+  File "D:\PycharmProjects\pythonProject\PM\main.py", line 264, in train_model
+    model.fit_generator(train_generator=train_generator,
+  File "D:\PycharmProjects\pythonProject\PM\psm_pbm.py", line 43, in fit_generator
+    super(PSM_PBM, self).fit_generator(train_generator, train_steps, val_generator, val_steps, num_epochs, batch_size)
+  File "D:\PycharmProjects\pythonProject\PM\neural_network.py", line 86, in fit_generator
+    self.model.fit_generator(train_generator,
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\util\deprecation.py", line 324, in new_func
+    return func(*args, **kwargs)
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\engine\training_v1.py", line 1217, in fit_generator
+    return self.fit(
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\engine\training_v1.py", line 766, in fit
+    return func.fit(
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\engine\training_generator.py", line 574, in fit
+    return fit_generator(
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\engine\training_generator.py", line 169, in model_iteration
+    callbacks = cbks.configure_callbacks(
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\callbacks.py", line 108, in configure_callbacks
+    callback_list = CallbackList(callbacks)
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\callbacks.py", line 232, in __init__
+    self._should_call_test_batch_hooks = any(
+  File "C:\ProgramData\Anaconda3\envs\pythonProject\lib\site-packages\tensorflow\python\keras\callbacks.py", line 233, in <genexpr>
+    cb._implements_test_batch_hooks() for cb in self.callbacks)
+AttributeError: 'CounterfactualEarlyStopping' object has no attribute '_implements_test_batch_hooks'

@@ -296,7 +296,7 @@ class MyApp(QMainWindow):
 
     def updateResult(self):
         try:
-            filename = "Results.csv"
+            filename = os.getcwd()+"\\Results.csv"
             rows = self.readResultCSV(filename)
             formatter = "{0:.2f}"
             # Would be better to change it to pandas dataframe and process
@@ -316,7 +316,8 @@ class MyApp(QMainWindow):
         self.changeBtnStatus()
 
     def readResultCSV(self, filename):
-        filepath = os.getcwd() + "\\" + filename
+        filepath = filename
+        print(filepath)
         # filepath = filename
         fields = []
         rows = list()
@@ -325,7 +326,7 @@ class MyApp(QMainWindow):
             csvreader = csv.reader(csvfile)
 
             # extracting field names through first row
-            fields = next(csvreader)
+            # fields = next(csvreader)
 
             # extracting each data row one by one
             for row in csvreader:

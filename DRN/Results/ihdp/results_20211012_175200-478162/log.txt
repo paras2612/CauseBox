@@ -1,0 +1,30 @@
+Training with hyperparameters: alpha=0.0001, lambda=0.0001
+Training data: CFRNet/Dataset/IHDP/ihdp_npci_1-1000.train.npz/ihdp_npci_1-1000.train.npz
+Test data:     CFRNet/Dataset/IHDP/ihdp_npci_1-1000.test.npz/ihdp_npci_1-1000.test.npz
+Loaded data with shape [672,25]
+Defining graph...
+
+Training on experiment 1/1...
+0	Obj: 46.638,	F: 3.813,	Cf: 6.007,	Imb: 0.67,	Val: 3.844,	ValImb: 0.68,	ValObj: 47.39
+100	Obj: 43.044,	F: 3.707,	Cf: 5.889,	Imb: 1.5,	Val: 3.738,	ValImb: 1.5,	ValObj: 43.76
+200	Obj: 29.165,	F: 3.060,	Cf: 5.107,	Imb: 1.5,	Val: 3.091,	ValImb: 1.5,	ValObj: 29.82
+300	Obj: 14.595,	F: 2.183,	Cf: 3.565,	Imb: 1.5,	Val: 2.215,	ValImb: 1.5,	ValObj: 15.20
+400	Obj: 5.858,	F: 1.481,	Cf: 1.990,	Imb: 0.9,	Val: 1.543,	ValImb: 0.97,	ValObj: 6.49
+500	Obj: 3.516,	F: 1.193,	Cf: 1.199,	Imb: 1.1,	Val: 1.233,	ValImb: 1.2,	ValObj: 3.83
+600	Obj: 2.751,	F: 1.068,	Cf: 1.075,	Imb: 1.1,	Val: 1.125,	ValImb: 1.2,	ValObj: 3.13
+700	Obj: 2.322,	F: 0.992,	Cf: 1.038,	Imb: 1.2,	Val: 1.076,	ValImb: 1.3,	ValObj: 2.80
+800	Obj: 2.044,	F: 0.939,	Cf: 1.043,	Imb: 1.3,	Val: 1.089,	ValImb: 1.3,	ValObj: 2.86
+900	Obj: 1.898,	F: 0.914,	Cf: 1.028,	Imb: 1.3,	Val: 1.088,	ValImb: 1.3,	ValObj: 2.82
+1000	Obj: 1.794,	F: 0.898,	Cf: 1.043,	Imb: 1.3,	Val: 1.088,	ValImb: 1.3,	ValObj: 2.74
+1100	Obj: 1.758,	F: 0.900,	Cf: 1.037,	Imb: 1.3,	Val: 1.085,	ValImb: 1.3,	ValObj: 2.64
+1200	Obj: 1.607,	F: 0.867,	Cf: 1.036,	Imb: 1.3,	Val: 1.091,	ValImb: 1.3,	ValObj: 2.66
+1300	Obj: 1.542,	F: 0.856,	Cf: 1.074,	Imb: 1.3,	Val: 1.127,	ValImb: 1.3,	ValObj: 2.78
+1400	Obj: 1.452,	F: 0.845,	Cf: 1.083,	Imb: 1.3,	Val: 1.140,	ValImb: 1.3,	ValObj: 2.87
+1500	Obj: 1.376,	F: 0.826,	Cf: 1.077,	Imb: 1.3,	Val: 1.152,	ValImb: 1.3,	ValObj: 2.91
+1600	Obj: 1.408,	F: 0.837,	Cf: 1.124,	Imb: 1.3,	Val: 1.166,	ValImb: 1.3,	ValObj: 2.97
+1700	Obj: 1.675,	F: 0.925,	Cf: 1.138,	Imb: 1.3,	Val: 1.170,	ValImb: 1.3,	ValObj: 2.84
+1800	Obj: 1.241,	F: 0.809,	Cf: 1.127,	Imb: 1.3,	Val: 1.239,	ValImb: 1.3,	ValObj: 3.55
+1900	Obj: 1.231,	F: 0.810,	Cf: 1.146,	Imb: 1.3,	Val: 1.204,	ValImb: 1.3,	ValObj: 3.22
+1999	Obj: 1.250,	F: 0.828,	Cf: 1.181,	Imb: 1.3,	Val: 1.288,	ValImb: 1.3,	ValObj: 3.85
+Saving result to E:\Downloads\CauseBox\DRN\Results\ihdp\results_20211012_175200-478162\...
+

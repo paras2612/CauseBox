@@ -1,0 +1,18 @@
+Training with hyperparameters: p_pddm=0.32, r_mid_point_mini=0.32
+Training data: CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.train.npz
+Test data:     CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.test.npz
+Loaded data with shape [2570,17]
+Defining graph...
+
+Training on experiment 1/2...
+0	Obj: 59.455,	F: 0.923,	Cf: nan,	PDDM: 1.9e+02,	mid_p: 0.011,	Val: 0.924,	ValObj: 66.84
+100	Obj: 1.937,	F: 0.437,	Cf: nan,	PDDM: 5.5,	mid_p: 0.021,	Val: 0.437,	ValObj: 13.78
+199	Obj: 2.534,	F: 0.353,	Cf: nan,	PDDM: 7.5,	mid_p: 0.0043,	Val: 0.353,	ValObj: 11.23
+Saving result to E:\Downloads\CauseBox\SITE\Results\jobs\results_20211012_180746-270621\...
+
+Training on experiment 2/2...
+0	Obj: 59.601,	F: 0.923,	Cf: nan,	PDDM: 1.9e+02,	mid_p: 0.0058,	Val: 0.924,	ValObj: 59.16
+100	Obj: 4.516,	F: 0.545,	Cf: nan,	PDDM: 13,	mid_p: 0.77,	Val: 0.545,	ValObj: 4.58
+199	Obj: 1.360,	F: 0.346,	Cf: nan,	PDDM: 3.2,	mid_p: 0.62,	Val: 0.346,	ValObj: 1.32
+Saving result to E:\Downloads\CauseBox\SITE\Results\jobs\results_20211012_180746-270621\...
+

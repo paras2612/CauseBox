@@ -1,0 +1,12 @@
+Training with hyperparameters: alpha=0.0001, lambda=0.0001
+Training data: CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.train.npz
+Test data:     CFRNet/Dataset/Jobs/jobs_DW_bin.new.10.test.npz
+Loaded data with shape [2570,17]
+Defining graph...
+
+Training on experiment 1/1...
+0	Obj: 4.689,	F: 0.921,	Cf: nan,	Imb: 0.41,	Val: 0.929,	ValImb: 0.43,	ValObj: 4.76
+100	Obj: 3.332,	F: 0.810,	Cf: nan,	Imb: 2.6,	Val: 0.814,	ValImb: 2.6,	ValObj: 3.35
+199	Obj: 0.542,	F: 0.337,	Cf: nan,	Imb: 2.2,	Val: 0.312,	ValImb: 2.3,	ValObj: 0.47
+Saving result to E:\Downloads\CauseBox\DRN\Results\jobs\results_20211012_180719-957358\...
+

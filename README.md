@@ -4,9 +4,9 @@ Causal inference is a critical task in various fields such as healthcare,economi
 # Usage
 1) Uncompress datasets for IHDP before you use it as followings:
 
-In Windows, use the command <code>.DatasetScripts/IHDP_uncompress.bat</code>
+- In Windows, use the command <code>.DatasetScripts/IHDP_uncompress.bat</code>
 
-In Linux, use the command <code>.DatasetScripts/IHDP_uncompress.sh</code>
+- In Linux, use the command <code>.DatasetScripts/IHDP_uncompress.sh</code>
 
 2) Please download R(version==4.08) on the internet
 
